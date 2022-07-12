@@ -1,13 +1,12 @@
 package com.example.myapp.db.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.myapp.model.confirm.ConfirmedBD
-import com.example.myapp.model.country.CountryDB
+import com.example.myapp.model.db.ConfirmedBD
 
+/**описание методов для работы с базой данных*/
 @Dao
 interface DaoConfirmed {
 
@@ -15,5 +14,5 @@ interface DaoConfirmed {
     suspend fun insert(model: ConfirmedBD)
 
     @Query("SELECT * from confirmed_table WHERE country =:country")
-    fun getAll(country: String): LiveData<List<ConfirmedBD>>
+    suspend fun getAll(country: String): List<ConfirmedBD>
 }

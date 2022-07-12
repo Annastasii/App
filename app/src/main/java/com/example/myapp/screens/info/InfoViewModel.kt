@@ -1,59 +1,69 @@
 package com.example.myapp.screens.info
 
-import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.myapp.App
 import com.example.myapp.data.repository.Repository
-import com.example.myapp.db.CountryDatabase
-import com.example.myapp.db.repository.RealizateConfirmed
+import com.example.myapp.db.dao.DaoConfirmed
 import com.example.myapp.model.confirm.Confirmed
-import com.example.myapp.model.confirm.ConfirmedBD
+import com.example.myapp.model.db.ConfirmedBD
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import com.example.myapp.db.repository.RepositoryConfirmed as RepositoryConfirmed
 
 
-class InfoViewModel(application: Application):  AndroidViewModel(application) {
-    val repo = Repository()
-    val context = application
-    lateinit var Repository: RepositoryConfirmed
+class InfoViewModel : ViewModel() {
+    private val repo = Repository()
+    private val livedata: MutableLiveData<List<ConfirmedBD>> = MutableLiveData()
+    private var confirmedDao: DaoConfirmed? = null
 
-    //    инициализация базы данных
-    fun initDB(){
-        val dao = CountryDatabase.getInstance(context).getConfirmedDao()
-        Repository = RealizateConfirmed(dao)
+    // получить базу данных
+    fun getDB() {
+        val database = App.getInstance()?.getDatabase()
+        confirmedDao = database?.getConfirmedDao()
     }
 
-    //    mapper
-    fun mapperInfo(list: Confirmed) = ConfirmedBD(id = 0, list.slug, list.totalConfirmed, list.totalDeaths, list.totalRecovered, list.confirmed, list.country, list.countryCode, list.date, list.deaths, list.recovered)
+    // mapper Confirmed to ConfirmedBD
+    private fun mapperInfo(list: Confirmed) = ConfirmedBD(
+        list.slug,
+        list.totalConfirmed,
+        list.totalDeaths,
+        list.totalRecovered,
+        list.confirmed,
+        list.country,
+        list.countryCode,
+        list.date,
+        list.deaths,
+        list.recovered
+    )
 
-    //    добавление даных в базу данных
-    fun insertConfirmed(model: ConfirmedBD, onSuccess:() -> Unit){
+    // добавление даных в базу данных
+    private fun insertConfirmed(model: ConfirmedBD) {
         viewModelScope.launch(Dispatchers.IO) {
-            Repository.insertConfirmed(model){
-                onSuccess()
-            }
+            confirmedDao?.insert(model)
         }
     }
 
-    //    перенос данных по элементу
-    fun setConfirmed(){
+    // перенос данных по элементу
+    fun setConfirmed() {
         viewModelScope.launch {
-            val response = repo.getSummar()
-            response.body()?.let { item ->
-                item.Countries.let { list ->
-                    list.forEach(){
-                        insertConfirmed(mapperInfo(it)){}
+            val response = repo.getSummary()
+            response.body()?.let { summary ->
+                summary.countries.let { item ->
+                    item.forEach {
+                        insertConfirmed(mapperInfo(it))
                     }
-
                 }
             }
         }
     }
 
-    //  получить список (room)
+    // получить список (room)
     fun getConfirmed(country: String): LiveData<List<ConfirmedBD>> {
-        return Repository.allConfirmed(country)
+        viewModelScope.launch {
+            livedata.postValue(confirmedDao?.getAll(country))
+        }
+        return livedata
     }
-
-
 }

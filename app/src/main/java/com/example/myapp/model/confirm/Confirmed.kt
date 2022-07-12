@@ -2,6 +2,8 @@ package com.example.myapp.model.confirm
 
 import com.google.gson.annotations.SerializedName
 
+
+/**структура confirmed*/
 data class Confirmed(
 
     @SerializedName("Country")
@@ -32,5 +34,5 @@ data class Confirmed(
     val totalDeaths: Int,
 
     @SerializedName("TotalRecovered")
-    val totalRecovered: Int
+    val totalRecovered: Int,
 )

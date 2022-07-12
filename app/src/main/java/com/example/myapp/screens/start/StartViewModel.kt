@@ -1,63 +1,71 @@
 package com.example.myapp.screens.start
 
 
-import android.app.Application
-import androidx.lifecycle.*
-import com.example.myapp.REPOSITORY
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.myapp.App
 import com.example.myapp.data.repository.Repository
-import com.example.myapp.db.CountryDatabase
-import com.example.myapp.db.repository.Realizate
-import com.example.myapp.model.country.CountryDB
+import com.example.myapp.db.dao.DaoCountry
+import com.example.myapp.model.country.CountryItem
+import com.example.myapp.model.db.CountryDB
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import com.example.myapp.model.country.CountryItem as CountryItem
 
 
-class StartViewModel(application: Application): AndroidViewModel(application) {
-    val rep = Repository()
-//    val countryList: MutableLiveData<Response<Country>> = MutableLiveData()
+class StartViewModel : ViewModel() {
+    private val rep = Repository()
     var list = listOf<CountryItem>()
-    val context = application
+    private var countryDao: DaoCountry? = null
+    private val livedata: MutableLiveData<List<CountryDB>> = MutableLiveData()
+    private val livedataFilter: MutableLiveData<List<CountryDB>> = MutableLiveData()
 
 
-//    инициализация базы данных
-    fun initDB(){
-        val dao = CountryDatabase.getInstance(context).getCountryDao()
-        REPOSITORY = Realizate(dao)
+    // инициализация базы данных
+    fun initDB() {
+        val db = App.getInstance()?.getDatabase()
+        countryDao = db?.getCountryDao()
     }
 
-//    перенос данных из countryitem в countrybd
-    fun mapper(list: CountryItem) = CountryDB( list.country, list.iso2, list.slug)
+    // перенос данных из CountryItem в CountryDB
+    private fun mapper(list: CountryItem) = CountryDB(list.country, list.iso2, list.slug)
 
-//    добавление данных в базу данных
-    fun insert(model: CountryDB, onSuccess:() -> Unit){
+    // добавление данных в базу данных
+    private fun insert(model: CountryDB) {
         viewModelScope.launch(Dispatchers.IO) {
-            REPOSITORY.insert(model){
-                onSuccess()
-            }
+            countryDao?.insert(model)
         }
     }
 
-//    перенос данных по элементу
-    fun setCountry(){
+    // перенос данных по элементу
+    fun setCountry() {
         viewModelScope.launch {
-            val response = rep.getCountr()
-
-            response.body().let { item->
+            val response = rep.getCountry()
+            response.body().let { item ->
                 item?.forEach {
-                    insert(mapper(it)){}
+                    insert(mapper(it))
                 }
             }
         }
     }
-//  получить список (room)
+
+    // получить список (room)
     fun getCountry(): LiveData<List<CountryDB>> {
-        return REPOSITORY.allCountry
+        viewModelScope.launch {
+            livedata.postValue(countryDao!!.getAll())
+        }
+        return livedata
     }
 
-//    filter
+    // filter (text edit)
     fun filter(text: String): LiveData<List<CountryDB>> {
-        return REPOSITORY.filtered(text)
+        viewModelScope.launch {
+            delay(1000)
+            livedataFilter.postValue(countryDao?.getFilteredItems(text))
+        }
+        return livedataFilter
     }
 }
 

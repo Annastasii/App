@@ -5,7 +5,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-
+/**инициализация retrofit*/
 object RetrofitInstance {
 
     private val logging = HttpLoggingInterceptor()
@@ -20,10 +20,9 @@ object RetrofitInstance {
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
     }
+
     val api: ApiService by lazy {
         retrofit.create(ApiService::class.java)
     }
-
 }

@@ -1,16 +1,19 @@
 package com.example.myapp.data.repository
 
 import com.example.myapp.data.api.RetrofitInstance
-import com.example.myapp.model.confirm.All
-import com.example.myapp.model.confirm.Confirmed
-import com.example.myapp.model.country.Country
+import com.example.myapp.model.confirm.Summary
+import com.example.myapp.model.country.CountryItem
 import retrofit2.Response
 
-class Repository() {
-    suspend fun getCountr() : Response<Country>{
+
+/**реализация запросов retrofit*/
+class Repository {
+
+    suspend fun getCountry(): Response<List<CountryItem>> {
         return RetrofitInstance.api.getCountry()
     }
-    suspend fun getSummar() : Response<All>{
+
+    suspend fun getSummary(): Response<Summary> {
         return RetrofitInstance.api.getSummary()
     }
 }
