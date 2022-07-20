@@ -5,16 +5,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapp.App
+import com.example.myapp.data.api.ApiService
 import com.example.myapp.data.repository.Repository
 import com.example.myapp.db.dao.DaoConfirmed
 import com.example.myapp.model.confirm.Confirmed
 import com.example.myapp.model.db.ConfirmedBD
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
+import javax.inject.Inject
 
 class InfoViewModel : ViewModel() {
-    private val repo = Repository()
+
+    @Inject
+    lateinit var api: ApiService
+
+    private val repo = Repository(api)
     private val livedata: MutableLiveData<List<ConfirmedBD>> = MutableLiveData()
     private var confirmedDao: DaoConfirmed? = null
 

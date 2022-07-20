@@ -1,21 +1,22 @@
 package com.example.myapp
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.example.myapp.databinding.FragmentInfoBinding
 import com.example.myapp.model.db.CountryDB
 import com.example.myapp.screens.info.InfoViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class InfoFragment : Fragment() {
 
     private var binding: FragmentInfoBinding? = null
     private lateinit var currentCountry: CountryDB
+    private val vm: InfoViewModel by viewModels()
 
 
     override fun onCreateView(
@@ -40,7 +41,7 @@ class InfoFragment : Fragment() {
         //  установить полученное название
         binding?.coun?.text = country
 
-        val vm = ViewModelProvider(this)[InfoViewModel::class.java]
+//        val vm = ViewModelProvider(this)[InfoViewModel::class.java]
 
         //  получить базу данных
         vm.getDB()

@@ -9,13 +9,15 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.databinding.FragmentStartBinding
 import com.example.myapp.model.db.CountryDB
 import com.example.myapp.screens.start.Adapter
 import com.example.myapp.screens.start.StartViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class StartFragment : Fragment() {
 
     private var search: EditText? = null
@@ -23,6 +25,7 @@ class StartFragment : Fragment() {
     private var binding: FragmentStartBinding? = null
     var text: TextView? = null
     var adapter: Adapter? = null
+    private val viewModel: StartViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +42,7 @@ class StartFragment : Fragment() {
 
     private fun init() {
 
-        val viewModel = ViewModelProvider(this)[StartViewModel::class.java]
+//        val viewModel = ViewModelProvider(this)[StartViewModel::class.java]
 
         recyclerView = binding?.list
         adapter = Adapter()

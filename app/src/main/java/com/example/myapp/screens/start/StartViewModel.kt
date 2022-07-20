@@ -6,17 +6,27 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapp.App
+import com.example.myapp.data.api.ApiService
 import com.example.myapp.data.repository.Repository
 import com.example.myapp.db.dao.DaoCountry
 import com.example.myapp.model.country.CountryItem
 import com.example.myapp.model.db.CountryDB
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-class StartViewModel : ViewModel() {
-    private val rep = Repository()
+@HiltViewModel
+class StartViewModel @Inject constructor(
+    val api: ApiService
+) : ViewModel() {
+
+//    @Inject
+//    lateinit var api : ApiService
+
+    private val rep = Repository(api)
     var list = listOf<CountryItem>()
     private var countryDao: DaoCountry? = null
     private val livedata: MutableLiveData<List<CountryDB>> = MutableLiveData()
