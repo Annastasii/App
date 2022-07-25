@@ -5,14 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapp.App
 import com.example.myapp.data.api.ApiService
 import com.example.myapp.data.repository.Repository
 import com.example.myapp.db.dao.DaoCountry
-import com.example.myapp.model.country.CountryItem
+import com.example.myapp.model.country.MapperCountry
 import com.example.myapp.model.db.CountryDB
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,42 +18,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StartViewModel @Inject constructor(
-    val api: ApiService
+    val api: ApiService,
+    private val daoCountry: DaoCountry,
+    private val repository: Repository
 ) : ViewModel() {
 
-//    @Inject
-//    lateinit var api : ApiService
-
-    private val rep = Repository(api)
-    var list = listOf<CountryItem>()
-    private var countryDao: DaoCountry? = null
     private val livedata: MutableLiveData<List<CountryDB>> = MutableLiveData()
     private val livedataFilter: MutableLiveData<List<CountryDB>> = MutableLiveData()
-
-
-    // инициализация базы данных
-    fun initDB() {
-        val db = App.getInstance()?.getDatabase()
-        countryDao = db?.getCountryDao()
-    }
-
-    // перенос данных из CountryItem в CountryDB
-    private fun mapper(list: CountryItem) = CountryDB(list.country, list.iso2, list.slug)
-
-    // добавление данных в базу данных
-    private fun insert(model: CountryDB) {
-        viewModelScope.launch(Dispatchers.IO) {
-            countryDao?.insert(model)
-        }
-    }
 
     // перенос данных по элементу
     fun setCountry() {
         viewModelScope.launch {
-            val response = rep.getCountry()
+            val response = repository.getCountry()
             response.body().let { item ->
                 item?.forEach {
-                    insert(mapper(it))
+                    MapperCountry(daoCountry).map(it)
                 }
             }
         }
@@ -64,7 +41,7 @@ class StartViewModel @Inject constructor(
     // получить список (room)
     fun getCountry(): LiveData<List<CountryDB>> {
         viewModelScope.launch {
-            livedata.postValue(countryDao!!.getAll())
+            livedata.postValue(daoCountry.getCountry())
         }
         return livedata
     }
@@ -73,7 +50,7 @@ class StartViewModel @Inject constructor(
     fun filter(text: String): LiveData<List<CountryDB>> {
         viewModelScope.launch {
             delay(1000)
-            livedataFilter.postValue(countryDao?.getFilteredItems(text))
+            livedataFilter.postValue(daoCountry.getFilteredCountry(text))
         }
         return livedataFilter
     }

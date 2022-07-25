@@ -1,54 +1,49 @@
 package com.example.myapp.screens.start
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapp.R
-import com.example.myapp.StartFragment
+import com.example.myapp.databinding.RecycleviewItemBinding
 import com.example.myapp.model.db.CountryDB
-import kotlinx.android.synthetic.main.recycleview_item.view.*
 
-class Adapter : RecyclerView.Adapter<Adapter.ViewHolder>() {
+class Adapter(val listener: Listener) : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
-    private var listStart = emptyList<CountryDB>()
+    private var listCountry = emptyList<CountryDB>()
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    class ViewHolder(private val binding: RecycleviewItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(countryDB: CountryDB, listener: Listener) = with(binding) {
+            country.text = countryDB.country
+            itemView.setOnClickListener {
+                listener.onClick(countryDB)
+            }
+        }
+    }
 
     // идентификатор макета для отдельного списка
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.recycleview_item, parent, false)
-        return ViewHolder(view)
+        val binding =
+            RecycleviewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     // связывание с данными
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.itemView.countr.text = listStart[position].country
+        holder.bind(listCountry[position], listener)
     }
 
     // возвращает количество элементов списка
     override fun getItemCount(): Int {
-        return listStart.size
+        return listCountry.size
     }
 
     fun setList(list: List<CountryDB>) {
         // передача списков
-        val diffUtil = NewDiffUtil(listStart, list)
+        val diffUtil = NewDiffUtil(listCountry, list)
         // сравненеие списков
         val diffResult = DiffUtil.calculateDiff(diffUtil)
-        listStart = list
+        listCountry = list
         diffResult.dispatchUpdatesTo(this)
-    }
-
-    override fun onViewAttachedToWindow(holder: ViewHolder) {
-        super.onViewAttachedToWindow(holder)
-        holder.itemView.setOnClickListener {
-            StartFragment.click(listStart[holder.adapterPosition])
-        }
-    }
-
-    override fun onViewDetachedFromWindow(holder: ViewHolder) {
-        holder.itemView.setOnClickListener(null)
     }
 }

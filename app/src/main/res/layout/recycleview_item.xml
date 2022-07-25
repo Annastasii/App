@@ -4,7 +4,7 @@
     android:layout_height="40dp">
 
     <TextView
-        android:id="@+id/countr"
+        android:id="@+id/country"
         android:layout_width="365dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"

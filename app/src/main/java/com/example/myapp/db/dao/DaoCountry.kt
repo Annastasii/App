@@ -15,8 +15,8 @@ interface DaoCountry {
     suspend fun insert(model: CountryDB)
 
     @Query("SELECT * from country_table")
-    suspend fun getAll(): List<CountryDB>
+    suspend fun getCountry(): List<CountryDB>
 
     @Query("SELECT * from country_table WHERE country LIKE :country ")
-    suspend fun getFilteredItems(country: String): List<CountryDB>
+    suspend fun getFilteredCountry(country: String): List<CountryDB>
 }

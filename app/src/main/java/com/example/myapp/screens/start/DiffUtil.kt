@@ -27,17 +27,6 @@ class NewDiffUtil(
 
     // сравнение изменений
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return when {
-            oldList[oldItemPosition].country != newList[newItemPosition].country -> {
-                false
-            }
-            oldList[oldItemPosition].iso2 != newList[newItemPosition].iso2 -> {
-                false
-            }
-            oldList[oldItemPosition].slug != newList[newItemPosition].slug -> {
-                false
-            }
-            else -> true
-        }
+        return oldList[oldItemPosition].country != newList[newItemPosition].country
     }
 }

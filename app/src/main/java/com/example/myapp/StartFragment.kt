@@ -14,15 +14,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.databinding.FragmentStartBinding
 import com.example.myapp.model.db.CountryDB
 import com.example.myapp.screens.start.Adapter
+import com.example.myapp.screens.start.Listener
 import com.example.myapp.screens.start.StartViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class StartFragment : Fragment() {
+class StartFragment : Fragment(), Listener {
 
     private var search: EditText? = null
     private var recyclerView: RecyclerView? = null
-    private var binding: FragmentStartBinding? = null
+    private var _binding: FragmentStartBinding? = null
+    private val binding get() = _binding!!
     var text: TextView? = null
     var adapter: Adapter? = null
     private val viewModel: StartViewModel by viewModels()
@@ -30,9 +32,10 @@ class StartFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentStartBinding.inflate(layoutInflater, container, false)
-        return binding?.root
+    ): View {
+        _binding = FragmentStartBinding.inflate(layoutInflater, container, false)
+        val view = binding
+        return view.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,22 +45,17 @@ class StartFragment : Fragment() {
 
     private fun init() {
 
-//        val viewModel = ViewModelProvider(this)[StartViewModel::class.java]
-
-        recyclerView = binding?.list
-        adapter = Adapter()
+        recyclerView = binding.list
+        adapter = Adapter(this)
         recyclerView?.adapter = adapter
-        search = binding?.search
-
-        //  инициализация базы данных
-        viewModel.initDB()
+        search = binding.search
 
         //  перенести данные из api в бд
         viewModel.setCountry()
 
         //  заполнение recyclerview
-        viewModel.getCountry().observe(viewLifecycleOwner) { list ->
-            adapter?.setList(list)
+        viewModel.getCountry().observe(viewLifecycleOwner) {
+            adapter?.setList(it)
         }
 
         //  прослушиваение edittext
@@ -68,26 +66,23 @@ class StartFragment : Fragment() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
-            override fun afterTextChanged(p0: Editable?) {
-                val txt = p0.toString()
-                val text = "%$txt%"
+            override fun afterTextChanged(text: Editable?) {
+                val text = "%$text%"
 
                 // фильтрация списка
-                viewModel.filter(text).observe(viewLifecycleOwner) { list ->
-                    adapter?.setList(list)
+                viewModel.filter(text).observe(viewLifecycleOwner) {
+                    adapter?.setList(it)
                 }
             }
         })
     }
 
-    companion object {
-        fun click(country: CountryDB) {
-            val bundle = Bundle()
-            bundle.putSerializable("country", country)
-            MainActivity.app?.navController?.navigate(
-                R.id.action_startFragment_to_infoFragment,
-                bundle
-            )
-        }
+     override fun onClick(country: CountryDB) {
+        val bundle = Bundle()
+        bundle.putSerializable("country", country)
+        (activity as MainActivity).navController.navigate(
+            R.id.action_startFragment_to_infoFragment,
+            bundle
+        )
     }
 }
