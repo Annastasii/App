@@ -5,10 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapp.data.api.ApiService
+import com.example.myapp.data.repository.DataBaseRepository
 import com.example.myapp.data.repository.Repository
-import com.example.myapp.db.dao.DaoCountry
-import com.example.myapp.model.country.MapperCountry
+import com.example.myapp.model.country.MapToDB
 import com.example.myapp.model.db.CountryDB
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -18,8 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StartViewModel @Inject constructor(
-    val api: ApiService,
-    private val daoCountry: DaoCountry,
+    private val dataBaseRepository: DataBaseRepository,
     private val repository: Repository
 ) : ViewModel() {
 
@@ -29,11 +27,8 @@ class StartViewModel @Inject constructor(
     // перенос данных по элементу
     fun setCountry() {
         viewModelScope.launch {
-            val response = repository.getCountry()
-            response.body().let { item ->
-                item?.forEach {
-                    MapperCountry(daoCountry).map(it)
-                }
+            repository.getCountry()?.let { list ->
+                dataBaseRepository.insertCountry(list.map { MapToDB.mapper(it) })
             }
         }
     }
@@ -41,7 +36,7 @@ class StartViewModel @Inject constructor(
     // получить список (room)
     fun getCountry(): LiveData<List<CountryDB>> {
         viewModelScope.launch {
-            livedata.postValue(daoCountry.getCountry())
+            livedata.postValue(dataBaseRepository.getCountry())
         }
         return livedata
     }
@@ -50,7 +45,7 @@ class StartViewModel @Inject constructor(
     fun filter(text: String): LiveData<List<CountryDB>> {
         viewModelScope.launch {
             delay(1000)
-            livedataFilter.postValue(daoCountry.getFilteredCountry(text))
+            livedataFilter.postValue(dataBaseRepository.getFilteredCountry(text))
         }
         return livedataFilter
     }

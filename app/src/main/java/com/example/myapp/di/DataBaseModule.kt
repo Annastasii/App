@@ -2,8 +2,7 @@ package com.example.myapp.di
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
-import com.example.myapp.App
+import com.example.myapp.data.repository.DataBaseRepository
 import com.example.myapp.db.CountryDatabase
 import com.example.myapp.db.dao.DaoConfirmed
 import com.example.myapp.db.dao.DaoCountry
@@ -18,13 +17,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class DataBaseModule {
 
-
-//    @Provides
-//    @Singleton
-//    fun provideGetInstance(): App? {
-//        return App.getInstance()
-//    }
-
     @Provides
     @Singleton
     fun provideGetDataBase(@ApplicationContext appContext: Context): CountryDatabase {
@@ -33,8 +25,8 @@ class DataBaseModule {
             CountryDatabase::class.java,
             "database"
         )
-        .fallbackToDestructiveMigration()
-        .build()
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides
@@ -49,4 +41,9 @@ class DataBaseModule {
         return countryDatabase.getConfirmedDao()
     }
 
+    @Provides
+    @Singleton
+    fun provideDataBase(daoCountry: DaoCountry, daoConfirmed: DaoConfirmed): DataBaseRepository {
+        return DataBaseRepository(daoConfirmed, daoCountry)
+    }
 }

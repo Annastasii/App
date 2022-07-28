@@ -12,7 +12,7 @@ import com.example.myapp.model.db.CountryDB
 interface DaoCountry {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(model: CountryDB)
+    suspend fun insert(list: List<CountryDB>)
 
     @Query("SELECT * from country_table")
     suspend fun getCountry(): List<CountryDB>

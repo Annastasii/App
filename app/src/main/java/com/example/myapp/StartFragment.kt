@@ -45,6 +45,7 @@ class StartFragment : Fragment(), Listener {
 
     private fun init() {
 
+
         recyclerView = binding.list
         adapter = Adapter(this)
         recyclerView?.adapter = adapter
@@ -67,17 +68,15 @@ class StartFragment : Fragment(), Listener {
             }
 
             override fun afterTextChanged(text: Editable?) {
-                val text = "%$text%"
-
                 // фильтрация списка
-                viewModel.filter(text).observe(viewLifecycleOwner) {
+                viewModel.filter("%$text%").observe(viewLifecycleOwner) {
                     adapter?.setList(it)
                 }
             }
         })
     }
 
-     override fun onClick(country: CountryDB) {
+    override fun onClick(country: CountryDB) {
         val bundle = Bundle()
         bundle.putSerializable("country", country)
         (activity as MainActivity).navController.navigate(
@@ -85,4 +84,5 @@ class StartFragment : Fragment(), Listener {
             bundle
         )
     }
+
 }

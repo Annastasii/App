@@ -2,15 +2,12 @@ package com.example.myapp.di
 
 import com.example.myapp.data.api.ApiService
 import com.example.myapp.data.repository.Repository
-import com.example.myapp.model.confirm.Summary
-import com.example.myapp.model.country.CountryItem
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -46,7 +43,7 @@ class RemoteModule {
 
     @Provides
     @Singleton
-     fun provideRepository(api: ApiService): Repository {
+    fun provideRepository(api: ApiService): Repository {
         return Repository(api)
     }
 }

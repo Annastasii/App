@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.databinding.RecycleviewItemBinding
 import com.example.myapp.model.db.CountryDB
 
-class Adapter(val listener: Listener) : RecyclerView.Adapter<Adapter.ViewHolder>() {
+class Adapter(private val listener: Listener) : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     private var listCountry = emptyList<CountryDB>()
 
-    class ViewHolder(private val binding: RecycleviewItemBinding) :
+    inner class ViewHolder(private val binding: RecycleviewItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(countryDB: CountryDB, listener: Listener) = with(binding) {
             country.text = countryDB.country
@@ -20,6 +20,7 @@ class Adapter(val listener: Listener) : RecyclerView.Adapter<Adapter.ViewHolder>
             }
         }
     }
+
 
     // идентификатор макета для отдельного списка
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
