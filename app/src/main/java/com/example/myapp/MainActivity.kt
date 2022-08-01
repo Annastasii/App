@@ -13,9 +13,6 @@ class MainActivity : AppCompatActivity() {
     private var binding: ActivityMainBinding? = null
     lateinit var navController: NavController
 
-    companion object {
-        var app: MainActivity? = null
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +20,5 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
         navController = Navigation.findNavController(this, R.id.nav)
-        app = this
     }
 }

@@ -1,6 +1,7 @@
 package com.example.myapp.di
 
 import com.example.myapp.data.api.ApiService
+import com.example.myapp.data.repository.Repository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,4 +40,10 @@ class RemoteModule {
     @Singleton
     fun provideApiService(retrofit: Retrofit): ApiService =
         retrofit.create(ApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideRepository(api: ApiService): Repository {
+        return Repository(api)
+    }
 }

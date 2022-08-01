@@ -12,11 +12,11 @@ import com.example.myapp.model.db.CountryDB
 interface DaoCountry {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(model: CountryDB)
+    suspend fun insert(list: List<CountryDB>)
 
     @Query("SELECT * from country_table")
-    suspend fun getAll(): List<CountryDB>
+    suspend fun getCountry(): List<CountryDB>
 
     @Query("SELECT * from country_table WHERE country LIKE :country ")
-    suspend fun getFilteredItems(country: String): List<CountryDB>
+    suspend fun getFilteredCountry(country: String): List<CountryDB>
 }

@@ -14,7 +14,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class InfoFragment : Fragment() {
 
-    private var binding: FragmentInfoBinding? = null
+    private var _binding: FragmentInfoBinding? = null
+    private val binding get() = _binding!!
     private lateinit var currentCountry: CountryDB
     private val vm: InfoViewModel by viewModels()
 
@@ -22,12 +23,13 @@ class InfoFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentInfoBinding.inflate(layoutInflater, container, false)
+    ): View {
+        _binding = FragmentInfoBinding.inflate(layoutInflater, container, false)
+        val view = binding
 
         //  получение наименования страны при нажатии на item
         currentCountry = arguments?.getSerializable("country") as CountryDB
-        return binding?.root
+        return view.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,38 +41,33 @@ class InfoFragment : Fragment() {
         val country = currentCountry.country
 
         //  установить полученное название
-        binding?.coun?.text = country
-
-//        val vm = ViewModelProvider(this)[InfoViewModel::class.java]
-
-        //  получить базу данных
-        vm.getDB()
+        binding.coun.text = country
 
         //  перенести данные из api в бд
         vm.setConfirmed()
 
         //  данные из livedata
         vm.getConfirmed(country).observe(viewLifecycleOwner) { list ->
-            list.getOrNull(0)?.let { obj ->
-                binding?.date?.text = "Date: ${obj.date}"
-                binding?.recovered?.text = "Recovered: ${obj.recovered}"
-                binding?.deaths?.text = "Deaths: ${obj.deaths}"
-                binding?.confirmed?.text = "Confirmed: ${obj.confirmed}"
-                binding?.totalConfirmed?.text = "Total Confirmed: ${obj.totalConfirmed}"
-                binding?.totalDeaths?.text = "Total Deaths: ${obj.totalDeaths}"
-                binding?.totalRecovered?.text = "TotalRecovered: ${obj.totalRecovered}"
+            list.getOrNull(0)?.let { confirmed ->
+                binding.date.text = "Date: ${confirmed.date}"
+                binding.recovered.text = "Recovered: ${confirmed.recovered}"
+                binding.deaths.text = "Deaths: ${confirmed.deaths}"
+                binding.confirmed.text = "Confirmed: ${confirmed.confirmed}"
+                binding.totalConfirmed.text = "Total Confirmed: ${confirmed.totalConfirmed}"
+                binding.totalDeaths.text = "Total Deaths: ${confirmed.totalDeaths}"
+                binding.totalRecovered.text = "TotalRecovered: ${confirmed.totalRecovered}"
             }
         }
 
         //  нажатие на кнопку update
-        binding!!.button.setOnClickListener {
+        binding.button.setOnClickListener {
             vm.setConfirmed()
             vm.getConfirmed(country)
         }
 
         //  нажатие на кнопку back
-        binding!!.back.setOnClickListener {
-            MainActivity.app?.navController?.navigate(R.id.action_infoFragment_to_startFragment)
+        binding.back.setOnClickListener {
+            (activity as MainActivity).navController.navigate(R.id.action_infoFragment_to_startFragment)
         }
     }
 }
