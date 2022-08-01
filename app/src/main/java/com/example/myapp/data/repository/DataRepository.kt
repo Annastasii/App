@@ -1,13 +1,13 @@
 package com.example.myapp.data.repository
 
-import com.example.myapp.db.dao.DaoConfirmed
 import com.example.myapp.db.dao.DaoCountry
-import com.example.myapp.model.db.ConfirmedBD
+import com.example.myapp.db.dao.DaoSummary
 import com.example.myapp.model.db.CountryDB
+import com.example.myapp.model.db.SummaryDB
 import javax.inject.Inject
 
-class DataBaseRepository @Inject constructor(
-    private val daoConfirmed: DaoConfirmed,
+class DataRepository @Inject constructor(
+    private val daoConfirmed: DaoSummary,
     private val daoCountry: DaoCountry
 ) {
     // добавление данных в базу данных
@@ -23,11 +23,11 @@ class DataBaseRepository @Inject constructor(
         return daoCountry.getFilteredCountry(text)
     }
 
-    suspend fun insertConfirmed(list: List<ConfirmedBD>) {
+    suspend fun insertConfirmed(list: List<SummaryDB>) {
         daoConfirmed.insertConfirmed(list)
     }
 
-    suspend fun getConfirmed(country: String): List<ConfirmedBD> {
+    suspend fun getConfirmed(country: String): List<SummaryDB> {
         return daoConfirmed.getConfirmed(country)
     }
 }

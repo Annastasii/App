@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapp.data.repository.DataBaseRepository
+import com.example.myapp.data.repository.DataRepository
 import com.example.myapp.data.repository.Repository
-import com.example.myapp.model.confirm.MapToDBConfirmed
-import com.example.myapp.model.db.ConfirmedBD
+import com.example.myapp.model.confirm.MapToDBSummary
+import com.example.myapp.model.db.SummaryDB
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,25 +15,25 @@ import javax.inject.Inject
 @HiltViewModel
 class InfoViewModel @Inject constructor(
     private val repository: Repository,
-    private val databaseRepository: DataBaseRepository
+    private val dataRepository: DataRepository
 ) : ViewModel() {
 
 
-    private val livedata: MutableLiveData<List<ConfirmedBD>> = MutableLiveData()
+    private val livedata: MutableLiveData<List<SummaryDB>> = MutableLiveData()
 
     // перенос данных по элементу
     fun setConfirmed() {
         viewModelScope.launch {
             repository.getSummary().let { list ->
-                databaseRepository.insertConfirmed(list.map { MapToDBConfirmed.mapper(it) })
+                dataRepository.insertConfirmed(list.map { MapToDBSummary.mapper(it) })
             }
         }
     }
 
     // получить список (room)
-    fun getConfirmed(country: String): LiveData<List<ConfirmedBD>> {
+    fun getConfirmed(country: String): LiveData<List<SummaryDB>> {
         viewModelScope.launch {
-            livedata.postValue(databaseRepository.getConfirmed(country))
+            livedata.postValue(dataRepository.getConfirmed(country))
         }
         return livedata
     }

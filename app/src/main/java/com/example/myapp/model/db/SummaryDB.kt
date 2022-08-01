@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 /**описание сущностей таблицы*/
 @Entity(tableName = "confirmed_table")
-data class ConfirmedBD(
+data class SummaryDB(
 
     @ColumnInfo(name = "slug")
     val slug: String,

@@ -14,12 +14,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.databinding.FragmentStartBinding
 import com.example.myapp.model.db.CountryDB
 import com.example.myapp.screens.start.Adapter
-import com.example.myapp.screens.start.Listener
 import com.example.myapp.screens.start.StartViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class StartFragment : Fragment(), Listener {
+class StartFragment : Fragment(){
 
     private var search: EditText? = null
     private var recyclerView: RecyclerView? = null
@@ -47,7 +46,7 @@ class StartFragment : Fragment(), Listener {
 
 
         recyclerView = binding.list
-        adapter = Adapter(this)
+        adapter = Adapter{StartFragment().onClick(it)}
         recyclerView?.adapter = adapter
         search = binding.search
 
@@ -76,7 +75,7 @@ class StartFragment : Fragment(), Listener {
         })
     }
 
-    override fun onClick(country: CountryDB) {
+    fun onClick(country: CountryDB) {
         val bundle = Bundle()
         bundle.putSerializable("country", country)
         (activity as MainActivity).navController.navigate(

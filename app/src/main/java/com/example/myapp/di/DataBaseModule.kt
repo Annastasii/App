@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import com.example.myapp.data.repository.DataBaseRepository
 import com.example.myapp.db.CountryDatabase
-import com.example.myapp.db.dao.DaoConfirmed
 import com.example.myapp.db.dao.DaoCountry
+import com.example.myapp.db.dao.DaoSummary
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,13 +37,13 @@ class DataBaseModule {
 
     @Provides
     @Singleton
-    fun provideGetDaoConfirmed(countryDatabase: CountryDatabase): DaoConfirmed {
-        return countryDatabase.getConfirmedDao()
+    fun provideGetDaoConfirmed(countryDatabase: CountryDatabase): DaoSummary {
+        return countryDatabase.getSummaryDao()
     }
 
     @Provides
     @Singleton
-    fun provideDataBase(daoCountry: DaoCountry, daoConfirmed: DaoConfirmed): DataBaseRepository {
-        return DataBaseRepository(daoConfirmed, daoCountry)
+    fun provideDataBase(daoCountry: DaoCountry, daoSummary: DaoSummary): DataBaseRepository {
+        return DataBaseRepository(daoSummary, daoCountry)
     }
 }

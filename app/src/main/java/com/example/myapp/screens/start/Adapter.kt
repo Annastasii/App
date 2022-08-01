@@ -7,16 +7,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.databinding.RecycleviewItemBinding
 import com.example.myapp.model.db.CountryDB
 
-class Adapter(private val listener: Listener) : RecyclerView.Adapter<Adapter.ViewHolder>() {
+class Adapter(private val listener: (list: CountryDB) -> Unit) : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     private var listCountry = emptyList<CountryDB>()
 
     inner class ViewHolder(private val binding: RecycleviewItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(countryDB: CountryDB, listener: Listener) = with(binding) {
+        fun bind(countryDB: CountryDB) = with(binding) {
             country.text = countryDB.country
             itemView.setOnClickListener {
-                listener.onClick(countryDB)
+                listener(countryDB)
             }
         }
     }
@@ -31,7 +31,7 @@ class Adapter(private val listener: Listener) : RecyclerView.Adapter<Adapter.Vie
 
     // связывание с данными
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(listCountry[position], listener)
+        holder.bind(listCountry[position])
     }
 
     // возвращает количество элементов списка

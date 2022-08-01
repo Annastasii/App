@@ -4,15 +4,15 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.myapp.model.db.ConfirmedBD
+import com.example.myapp.model.db.SummaryDB
 
 /**описание методов для работы с базой данных*/
 @Dao
-interface DaoConfirmed {
+interface DaoSummary {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertConfirmed(model: List<ConfirmedBD>)
+    suspend fun insertConfirmed(model: List<SummaryDB>)
 
     @Query("SELECT * from confirmed_table WHERE country =:country")
-    suspend fun getConfirmed(country: String): List<ConfirmedBD>
+    suspend fun getConfirmed(country: String): List<SummaryDB>
 }
