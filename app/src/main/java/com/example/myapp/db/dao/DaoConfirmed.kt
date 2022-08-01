@@ -11,7 +11,7 @@ import com.example.myapp.model.db.ConfirmedBD
 interface DaoConfirmed {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertConfirmed(model: ConfirmedBD)
+    suspend fun insertConfirmed(model: List<ConfirmedBD>)
 
     @Query("SELECT * from confirmed_table WHERE country =:country")
     suspend fun getConfirmed(country: String): List<ConfirmedBD>

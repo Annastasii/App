@@ -24,7 +24,7 @@ class InfoViewModel @Inject constructor(
     // перенос данных по элементу
     fun setConfirmed() {
         viewModelScope.launch {
-            repository.getSummary()?.let { list ->
+            repository.getSummary().let { list ->
                 databaseRepository.insertConfirmed(list.map { MapToDBConfirmed.mapper(it) })
             }
         }
