@@ -19,7 +19,7 @@ class StartViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
 
-    private val livedata: MutableLiveData<List<CountryDB>> = MutableLiveData()
+    var livedata: MutableLiveData<List<CountryDB>> = MutableLiveData()
     private val livedataFilter: MutableLiveData<List<CountryDB>> = MutableLiveData()
 
     // перенос данных по элементу
@@ -32,12 +32,11 @@ class StartViewModel @Inject constructor(
     }
 
     // получить список (room)
-    fun getCountry(): LiveData<List<CountryDB>> {
+    fun getCountry() {
         viewModelScope.launch {
             livedata.postValue(repository.getCountry())
-        }
-        return livedata
     }
+}
 
     // filter (text edit)
     fun filter(text: String): LiveData<List<CountryDB>> {

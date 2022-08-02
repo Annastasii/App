@@ -53,8 +53,10 @@ class StartFragment : Fragment(){
         //  перенести данные из api в бд
         viewModel.setCountry()
 
+        viewModel.getCountry()
+
         //  заполнение recyclerview
-        viewModel.getCountry().observe(viewLifecycleOwner) {
+        viewModel.livedata.observe(viewLifecycleOwner) {
             adapter?.setList(it)
         }
 
