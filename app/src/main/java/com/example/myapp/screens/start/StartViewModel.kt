@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapp.data.repository.DataRepository
 import com.example.myapp.data.repository.Repository
 import com.example.myapp.model.country.MapToDB
 import com.example.myapp.model.db.CountryDB
@@ -17,7 +16,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StartViewModel @Inject constructor(
-    private val dataRepository: DataRepository,
     private val repository: Repository
 ) : ViewModel() {
 
@@ -27,8 +25,8 @@ class StartViewModel @Inject constructor(
     // перенос данных по элементу
     fun setCountry() {
         viewModelScope.launch {
-            repository.getCountry().let { list ->
-                dataRepository.insertCountry(list.map { MapToDB.mapper(it) })
+            repository.getCountryApi().let { list ->
+                repository.insertCountry(list.map { MapToDB.mapper(it) })
             }
         }
     }
@@ -36,7 +34,7 @@ class StartViewModel @Inject constructor(
     // получить список (room)
     fun getCountry(): LiveData<List<CountryDB>> {
         viewModelScope.launch {
-            livedata.postValue(dataRepository.getCountry())
+            livedata.postValue(repository.getCountry())
         }
         return livedata
     }
@@ -45,7 +43,7 @@ class StartViewModel @Inject constructor(
     fun filter(text: String): LiveData<List<CountryDB>> {
         viewModelScope.launch {
             delay(1000)
-            livedataFilter.postValue(dataRepository.getFilteredCountry(text))
+            livedataFilter.postValue(repository.getFilteredCountry(text))
         }
         return livedataFilter
     }

@@ -1,21 +1,48 @@
 package com.example.myapp.data.repository
 
 import com.example.myapp.data.api.ApiService
+import com.example.myapp.db.dao.DaoCountry
+import com.example.myapp.db.dao.DaoSummary
 import com.example.myapp.model.confirm.Contries
 import com.example.myapp.model.country.CountryItem
+import com.example.myapp.model.db.CountryDB
+import com.example.myapp.model.db.SummaryDB
 import javax.inject.Inject
 
 
 /**реализация запросов retrofit*/
 class Repository @Inject constructor(
-    private val api: ApiService
+    private val api: ApiService,
+    private val daoConfirmed: DaoSummary,
+    private val daoCountry: DaoCountry
 ) {
 
-    suspend fun getCountry(): List<CountryItem> {
+    suspend fun getCountryApi(): List<CountryItem> {
         return api.getCountry().body()!!
     }
 
-    suspend fun getSummary(): List<Contries> {
+    suspend fun getSummaryApi(): List<Contries> {
         return api.getSummary().body()!!.countries
+    }
+
+    // добавление данных в базу данных
+    suspend fun insertCountry(list: List<CountryDB>) {
+        daoCountry.insert(list)
+    }
+
+    suspend fun getCountry(): List<CountryDB> {
+        return daoCountry.getCountry()
+    }
+
+    suspend fun getFilteredCountry(text: String): List<CountryDB> {
+        return daoCountry.getFilteredCountry(text)
+    }
+
+    suspend fun insertSummary(list: List<SummaryDB>) {
+        daoConfirmed.insertConfirmed(list)
+    }
+
+    suspend fun getSummary(country: String): List<SummaryDB> {
+        return daoConfirmed.getConfirmed(country)
     }
 }

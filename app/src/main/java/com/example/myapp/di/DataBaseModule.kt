@@ -2,7 +2,6 @@ package com.example.myapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.myapp.data.repository.DataBaseRepository
 import com.example.myapp.db.CountryDatabase
 import com.example.myapp.db.dao.DaoCountry
 import com.example.myapp.db.dao.DaoSummary
@@ -39,11 +38,5 @@ class DataBaseModule {
     @Singleton
     fun provideGetDaoConfirmed(countryDatabase: CountryDatabase): DaoSummary {
         return countryDatabase.getSummaryDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideDataBase(daoCountry: DaoCountry, daoSummary: DaoSummary): DataBaseRepository {
-        return DataBaseRepository(daoSummary, daoCountry)
     }
 }
