@@ -15,34 +15,35 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class RemoteModule {
+ interface RemoteModule {
 
-    @Provides
-    @Singleton
-    fun provideLogin(): HttpLoggingInterceptor = HttpLoggingInterceptor()
+    companion object{
+        @Provides
+        @Singleton
+        fun provideLogin(): HttpLoggingInterceptor = HttpLoggingInterceptor()
 
-    @Provides
-    @Singleton
-    fun provideOkHttpClient(logging: HttpLoggingInterceptor): OkHttpClient =
-        OkHttpClient.Builder()
-            .addInterceptor(logging)
-            .build()
+        @Provides
+        @Singleton
+        fun provideOkHttpClient(logging: HttpLoggingInterceptor): OkHttpClient =
+            OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .build()
 
-    @Provides
-    @Singleton
-    fun provideRetrofit(client: OkHttpClient): Retrofit =
-        Retrofit.Builder()
-            .baseUrl("https://api.covid19api.com/")
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        @Provides
+        @Singleton
+        fun provideRetrofit(client: OkHttpClient): Retrofit =
+            Retrofit.Builder()
+                .baseUrl("https://api.covid19api.com/")
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
 
-    @Provides
-    @Singleton
-    fun provideApiService(retrofit: Retrofit): ApiService =
-        retrofit.create(ApiService::class.java)
+        @Provides
+        @Singleton
+        fun provideApiService(retrofit: Retrofit): ApiService =
+            retrofit.create(ApiService::class.java)
+    }
 
     @Binds
-    @Singleton
     abstract fun provideRepository(api: ApiService): Repository
 }
