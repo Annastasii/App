@@ -1,5 +1,6 @@
 package com.example.myapp.data.repository
 
+import android.provider.CallLog
 import com.example.myapp.data.api.ApiService
 import com.example.myapp.db.dao.DaoCountry
 import com.example.myapp.db.dao.DaoSummary
@@ -7,7 +8,11 @@ import com.example.myapp.model.confirm.Contries
 import com.example.myapp.model.country.CountryItem
 import com.example.myapp.model.db.CountryDB
 import com.example.myapp.model.db.SummaryDB
+import org.chromium.base.Log
+import retrofit2.Callback
+import retrofit2.Response
 import javax.inject.Inject
+import kotlin.math.log
 
 
 /**реализация запросов retrofit*/
@@ -17,12 +22,24 @@ class Repository @Inject constructor(
     private val daoCountry: DaoCountry
 ) {
 
-    suspend fun getCountryApi(): List<CountryItem> {
-        return api.getCountry().body()!!
+    suspend fun getCountryApi(): List<CountryItem>? {
+        val response = api.getCountry()
+        try {
+            response.isSuccessful
+        }catch (e: Exception){
+            Log.e("retrofit", "${response.errorBody()}")
+        }
+        return response.body()
     }
 
     suspend fun getSummaryApi(): List<Contries> {
-        return api.getSummary().body()!!.countries
+        val response = api.getSummary()
+        try {
+            response.isSuccessful
+        }catch (e: Exception){
+            Log.e("retrofit", "${response.errorBody()}")
+        }
+        return response.body()!!.countries
     }
 
     // добавление данных в базу данных
