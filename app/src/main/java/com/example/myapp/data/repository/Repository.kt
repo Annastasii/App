@@ -1,6 +1,5 @@
 package com.example.myapp.data.repository
 
-import android.provider.CallLog
 import com.example.myapp.data.api.ApiService
 import com.example.myapp.db.dao.DaoCountry
 import com.example.myapp.db.dao.DaoSummary
@@ -9,16 +8,13 @@ import com.example.myapp.model.country.CountryItem
 import com.example.myapp.model.db.CountryDB
 import com.example.myapp.model.db.SummaryDB
 import org.chromium.base.Log
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
-import kotlin.math.log
 
 
 /**реализация запросов retrofit*/
 class Repository @Inject constructor(
     private val api: ApiService,
-    private val daoConfirmed: DaoSummary,
+    private val daoSummary: DaoSummary,
     private val daoCountry: DaoCountry
 ) {
 
@@ -56,10 +52,10 @@ class Repository @Inject constructor(
     }
 
     suspend fun insertSummary(list: List<SummaryDB>) {
-        daoConfirmed.insertConfirmed(list)
+        daoSummary.insertConfirmed(list)
     }
 
     suspend fun getSummary(country: String): List<SummaryDB> {
-        return daoConfirmed.getConfirmed(country)
+        return daoSummary.getConfirmed(country)
     }
 }

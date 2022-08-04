@@ -2,6 +2,8 @@ package com.example.myapp.di
 
 import com.example.myapp.data.api.ApiService
 import com.example.myapp.data.repository.Repository
+import com.example.myapp.db.dao.DaoCountry
+import com.example.myapp.db.dao.DaoSummary
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -13,11 +15,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-@Module
+@Module(includes = [DataBaseModule::class])
 @InstallIn(SingletonComponent::class)
- interface RemoteModule {
+ class RemoteModule {
 
-    companion object{
         @Provides
         @Singleton
         fun provideLogin(): HttpLoggingInterceptor = HttpLoggingInterceptor()
@@ -42,8 +43,11 @@ import javax.inject.Singleton
         @Singleton
         fun provideApiService(retrofit: Retrofit): ApiService =
             retrofit.create(ApiService::class.java)
-    }
 
-    @Binds
-    abstract fun provideRepository(api: ApiService): Repository
+
+    @Provides
+    @Singleton
+     fun provideRepository(api: ApiService, daoSummary: DaoSummary,daoCountry: DaoCountry): Repository{
+         return Repository(api, daoSummary,daoCountry)
+     }
 }
