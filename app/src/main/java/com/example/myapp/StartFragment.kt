@@ -46,7 +46,7 @@ class StartFragment : Fragment() {
 
 
         recyclerView = binding.list
-        adapter = Adapter { StartFragment().onClick(it) }
+        adapter = Adapter ({ StartFragment().onClick(it) })
         recyclerView?.adapter = adapter
         search = binding.search
 
@@ -77,7 +77,7 @@ class StartFragment : Fragment() {
         })
     }
 
-    fun onClick(country: CountryDB) {
+    private fun onClick(country: CountryDB) {
         val bundle = Bundle()
         bundle.putSerializable("country", country)
         (activity as MainActivity).navController.navigate(
