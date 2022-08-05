@@ -48,7 +48,7 @@ class InfoFragment : Fragment() {
 
         //  данные из livedata
         vm.getConfirmed(country).observe(viewLifecycleOwner) { list ->
-            list.map{ confirmed ->
+            list.map { confirmed ->
                 binding.date.text = "Date: ${confirmed.date}"
                 binding.recovered.text = "Recovered: ${confirmed.recovered}"
                 binding.deaths.text = "Deaths: ${confirmed.deaths}"

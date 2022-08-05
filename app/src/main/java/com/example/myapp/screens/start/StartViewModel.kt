@@ -35,8 +35,8 @@ class StartViewModel @Inject constructor(
     fun getCountry() {
         viewModelScope.launch {
             livedata.postValue(repository.getCountry())
+        }
     }
-}
 
     // filter (text edit)
     fun filter(text: String): LiveData<List<CountryDB>> {

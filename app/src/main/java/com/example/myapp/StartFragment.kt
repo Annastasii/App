@@ -18,7 +18,7 @@ import com.example.myapp.screens.start.StartViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class StartFragment : Fragment(){
+class StartFragment : Fragment() {
 
     private var search: EditText? = null
     private var recyclerView: RecyclerView? = null
@@ -46,7 +46,7 @@ class StartFragment : Fragment(){
 
 
         recyclerView = binding.list
-        adapter = Adapter{StartFragment().onClick(it)}
+        adapter = Adapter { StartFragment().onClick(it) }
         recyclerView?.adapter = adapter
         search = binding.search
 

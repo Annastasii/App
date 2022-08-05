@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.databinding.RecycleviewItemBinding
 import com.example.myapp.model.db.CountryDB
 
-class Adapter(private val listener: (list: CountryDB) -> Unit) : RecyclerView.Adapter<Adapter.ViewHolder>() {
+class Adapter(private val listener: (list: CountryDB) -> Unit) :
+    RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     private var listCountry = emptyList<CountryDB>()
 

@@ -22,7 +22,7 @@ class Repository @Inject constructor(
         val response = api.getCountry()
         try {
             response.isSuccessful
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Log.e("retrofit", "${response.errorBody()}")
         }
         return response.body()
@@ -32,7 +32,7 @@ class Repository @Inject constructor(
         val response = api.getSummary()
         try {
             response.isSuccessful
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Log.e("retrofit", "${response.errorBody()}")
         }
         return response.body()!!.countries
