@@ -50,9 +50,6 @@ class StartFragment : Fragment() {
         recyclerView?.adapter = adapter
         search = binding.search
 
-        //  перенести данные из api в бд
-        viewModel.setCountry()
-
         viewModel.getCountry()
 
         //  заполнение recyclerview

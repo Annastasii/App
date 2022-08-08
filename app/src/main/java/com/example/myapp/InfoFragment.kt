@@ -43,9 +43,6 @@ class InfoFragment : Fragment() {
         //  установить полученное название
         binding.coun.text = country
 
-        //  перенести данные из api в бд
-        vm.setConfirmed()
-
         //  данные из livedata
         vm.getConfirmed(country).observe(viewLifecycleOwner) { list ->
             list.map { confirmed ->

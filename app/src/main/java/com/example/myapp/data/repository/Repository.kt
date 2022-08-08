@@ -18,14 +18,14 @@ class Repository @Inject constructor(
     private val daoCountry: DaoCountry
 ) {
 
-    suspend fun getCountryApi(): List<CountryItem>? {
+    suspend fun getCountryApi(): List<CountryItem> {
         val response = api.getCountry()
         try {
             response.isSuccessful
         } catch (e: Exception) {
             Log.e("retrofit", "${response.errorBody()}")
         }
-        return response.body()
+        return response.body()!!
     }
 
     suspend fun getSummaryApi(): List<Contries> {
