@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+
 }
 
 android {
@@ -10,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.myapp"
-        minSdk 21
+        minSdkVersion 21
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -32,14 +33,19 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures{
+//        viewBinding true
+        compose true
         viewBinding true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion "$compose_version"
     }
 }
 
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.5.0'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'org.chromium.net:cronet-embedded:102.5005.125'
@@ -47,12 +53,10 @@ dependencies {
     kapt  "android.arch.persistence.room:compiler:1.1.1"
     testImplementation 'junit:junit:4.13.2'
 
-    // jackson
-    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.12.1'
-
     // ViewModel
     def lifecycle_version = "2.5.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    //noinspection GradleDependency
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
 
     //Retrofit
@@ -73,35 +77,57 @@ dependencies {
 //    room
     def room_version = "2.3.0"
 
+    //noinspection GradleDependency
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.core:core-ktx:1.8.0"
-    implementation "androidx.room:room-ktx:2.4.2"
+    implementation "androidx.room:room-ktx:2.4.3"
 
 //    navigation
     def nav_version = "2.5.0"
 
     // Java language implementation
+    //noinspection GradleDependency
     implementation "androidx.navigation:navigation-fragment:$nav_version"
+    //noinspection GradleDependency
     implementation "androidx.navigation:navigation-ui:$nav_version"
 
     // Kotlin
+    //noinspection GradleDependency
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    //noinspection GradleDependency
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     // Feature module Support
+    //noinspection GradleDependency
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
 
     // Testing Navigation
+    //noinspection GradleDependency
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
     // Jetpack Compose Integration
+    //noinspection GradleDependency
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
     // hilt
     implementation "com.google.dagger:hilt-android:2.43"
     kapt  "com.google.dagger:hilt-compiler:2.43"
+
+//    compose
+ //    Integration with activities
+    implementation 'androidx.activity:activity-compose:1.5.1'
+    // Compose Material Design
+    implementation 'androidx.compose.material:material:1.2.1'
+    // Animations
+    implementation 'androidx.compose.animation:animation:1.2.1'
+    // Tooling support (Previews, etc.)
+    implementation 'androidx.compose.ui:ui-tooling:1.2.1'
+    // Integration with ViewModels
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
+    // UI Tests
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.2.1'
 }
 kapt {
     correctErrorTypes = true

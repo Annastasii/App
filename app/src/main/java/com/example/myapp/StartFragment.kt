@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapp.databinding.FragmentStartBinding
 import com.example.myapp.model.db.CountryDB
 import com.example.myapp.screens.start.Adapter
 import com.example.myapp.screens.start.StartViewModel
@@ -22,8 +21,6 @@ class StartFragment : Fragment() {
 
     private var search: EditText? = null
     private var recyclerView: RecyclerView? = null
-    private var _binding: FragmentStartBinding? = null
-    private val binding get() = _binding!!
     var text: TextView? = null
     var adapter: Adapter? = null
     private val viewModel: StartViewModel by viewModels()
@@ -32,9 +29,7 @@ class StartFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentStartBinding.inflate(layoutInflater, container, false)
-        val view = binding
-        return view.root
+        return inflater.inflate(R.layout.fragment_start, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,10 +40,10 @@ class StartFragment : Fragment() {
     private fun init() {
 
 
-        recyclerView = binding.list
+        recyclerView = view?.findViewById(R.id.recycler)
         adapter = Adapter { onClick(it) }
         recyclerView?.adapter = adapter
-        search = binding.search
+        search = view?.findViewById(R.id.search)
 
         viewModel.getCountry()
 

@@ -26,7 +26,7 @@ class StartViewModel @Inject constructor(
     fun setCountry() {
         viewModelScope.launch {
             repository.getCountryApi().let { list ->
-                repository.insertCountry(list!!.map { MapToDB.mapper(it) })
+                repository.insertCountry(list.map { MapToDB.mapper(it) })
             }
         }
     }
