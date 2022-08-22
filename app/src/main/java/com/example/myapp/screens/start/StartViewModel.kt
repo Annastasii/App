@@ -1,8 +1,8 @@
 package com.example.myapp.screens.start
 
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapp.data.repository.Repository
@@ -18,33 +18,38 @@ import javax.inject.Inject
 class StartViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
+    val screenStart: State<List<CountryDB>> get() = _screenStart
+    private val _screenStart = mutableStateOf(listOf<CountryDB>())
+    val screenStartFilter: State<List<CountryDB>> get() = _screenStartFilter
+    private val _screenStartFilter = mutableStateOf(listOf<CountryDB>())
 
-    var livedata: MutableLiveData<List<CountryDB>> = MutableLiveData()
-    private val livedataFilter: MutableLiveData<List<CountryDB>> = MutableLiveData()
+    init {
+        setCountry()
+    }
 
     // перенос данных по элементу
-    fun setCountry() {
+    private fun setCountry() {
         viewModelScope.launch {
             repository.getCountryApi().let { list ->
                 repository.insertCountry(list.map { MapToDB.mapper(it) })
             }
+            getCountry()
         }
     }
 
     // получить список (room)
     fun getCountry() {
         viewModelScope.launch {
-            livedata.postValue(repository.getCountry())
+            val result = repository.getCountry()
+            _screenStart.value = result
         }
     }
 
     // filter (text edit)
-    fun filter(text: String): LiveData<List<CountryDB>> {
+    fun filter(text: String) {
         viewModelScope.launch {
             delay(1000)
-            livedataFilter.postValue(repository.getFilteredCountry(text))
+            _screenStartFilter.value = repository.getFilteredCountry(text)
         }
-        return livedataFilter
     }
 }
-

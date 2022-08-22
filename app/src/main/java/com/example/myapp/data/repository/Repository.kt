@@ -20,6 +20,7 @@ class Repository @Inject constructor(
 
     suspend fun getCountryApi(): List<CountryItem> {
         val response = api.getCountry()
+        response.body()
         try {
             response.isSuccessful
         } catch (e: Exception) {
@@ -37,6 +38,7 @@ class Repository @Inject constructor(
         }
         return response.body()!!.countries
     }
+
 
     // добавление данных в базу данных
     suspend fun insertCountry(list: List<CountryDB>) {

@@ -1,7 +1,7 @@
 package com.example.myapp.screens.info
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapp.data.repository.Repository
@@ -16,23 +16,28 @@ class InfoViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
 
+    val screenInfo: State<List<SummaryDB>> get() = _screenInfo
+    private val _screenInfo = mutableStateOf(listOf<SummaryDB>())
 
-    private val livedata: MutableLiveData<List<SummaryDB>> = MutableLiveData()
+    init {
+
+    }
 
     // перенос данных по элементу
-    fun setConfirmed() {
+    fun setConfirmed(country: String) {
         viewModelScope.launch {
             repository.getSummaryApi().let { list ->
                 repository.insertSummary(list.map { MapToDBSummary.mapper(it) })
             }
+            getConfirmed(country)
         }
     }
 
     // получить список (room)
-    fun getConfirmed(country: String): LiveData<List<SummaryDB>> {
+    private fun getConfirmed(country: String) {
         viewModelScope.launch {
-            livedata.postValue(repository.getSummary(country))
+            val result = repository.getSummary(country)
+            _screenInfo.value = result
         }
-        return livedata
     }
 }
