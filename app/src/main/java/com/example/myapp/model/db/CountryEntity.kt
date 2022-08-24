@@ -7,7 +7,7 @@ import java.io.Serializable
 
 //описание сущностей таблицы
 @Entity(tableName = "country_table")
-data class CountryDB(
+data class CountryEntity(
 
     @PrimaryKey
     val country: String,

@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class Summary(
     @SerializedName("Countries")
-    val countries: List<Contries>
+    val countries: List<Countries>
 )

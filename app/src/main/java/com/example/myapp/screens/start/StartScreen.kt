@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.em
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.myapp.model.db.CountryDB
+import com.example.myapp.model.db.CountryEntity
 import com.example.myapp.screens.Screen
 
 
@@ -34,8 +34,7 @@ fun StartScreen(
     navController: NavController
 ) {
     val startViewModel = hiltViewModel<StartViewModel>()
-    val listCountry = startViewModel.screenStart
-    val listCountryFilter = startViewModel.screenStartFilter
+    val listCountry = startViewModel.countryItem
     val textState = remember { mutableStateOf(TextFieldValue("")) }
 
 
@@ -76,14 +75,16 @@ fun StartScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     val countries = listCountry.value
-                    val countriesFilter = listCountryFilter.value
-                    var filteredCountries: List<CountryDB>
+                    var filteredCountries: List<CountryEntity>
                     val searchedText = textState.value.text
                     filteredCountries = if (searchedText.isEmpty()) {
                         countries
                     } else {
-                        startViewModel.filter("%$searchedText%")
-                        countriesFilter
+                        countries.let { list ->
+                            list.filter { item ->
+                                item.country.contains(searchedText)
+                            }
+                        }
                     }
                     itemsIndexed(
                         filteredCountries

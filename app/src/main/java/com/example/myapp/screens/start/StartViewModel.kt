@@ -6,10 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapp.data.repository.Repository
-import com.example.myapp.model.country.MapToDB
-import com.example.myapp.model.db.CountryDB
+import com.example.myapp.model.db.CountryEntity
+import com.example.myapp.util.mapperToEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,10 +17,9 @@ import javax.inject.Inject
 class StartViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
-    val screenStart: State<List<CountryDB>> get() = _screenStart
-    private val _screenStart = mutableStateOf(listOf<CountryDB>())
-    val screenStartFilter: State<List<CountryDB>> get() = _screenStartFilter
-    private val _screenStartFilter = mutableStateOf(listOf<CountryDB>())
+
+    val countryItem: State<List<CountryEntity>> get() = _countryItem
+    private val _countryItem = mutableStateOf(listOf<CountryEntity>())
 
     init {
         setCountry()
@@ -31,25 +29,16 @@ class StartViewModel @Inject constructor(
     private fun setCountry() {
         viewModelScope.launch {
             repository.getCountryApi().let { list ->
-                repository.insertCountry(list.map { MapToDB.mapper(it) })
+                repository.insertCountry(list.map { it.mapperToEntity() })
             }
             getCountry()
         }
     }
 
-    // получить список (room)
-    fun getCountry() {
+    // получить список стран (room)
+    private fun getCountry() {
         viewModelScope.launch {
-            val result = repository.getCountry()
-            _screenStart.value = result
-        }
-    }
-
-    // filter (text edit)
-    fun filter(text: String) {
-        viewModelScope.launch {
-            delay(1000)
-            _screenStartFilter.value = repository.getFilteredCountry(text)
+            _countryItem.value = repository.getCountry()
         }
     }
 }

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 
 /**структура confirmed*/
-data class Contries(
+data class Countries(
 
     @SerializedName("Country")
     val country: String,

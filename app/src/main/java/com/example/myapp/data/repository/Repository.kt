@@ -3,10 +3,10 @@ package com.example.myapp.data.repository
 import com.example.myapp.data.api.ApiService
 import com.example.myapp.db.dao.DaoCountry
 import com.example.myapp.db.dao.DaoSummary
-import com.example.myapp.model.confirm.Contries
+import com.example.myapp.model.confirm.Countries
 import com.example.myapp.model.country.CountryItem
-import com.example.myapp.model.db.CountryDB
-import com.example.myapp.model.db.SummaryDB
+import com.example.myapp.model.db.CountryEntity
+import com.example.myapp.model.db.SummaryEntity
 import org.chromium.base.Log
 import javax.inject.Inject
 
@@ -29,7 +29,7 @@ class Repository @Inject constructor(
         return response.body()!!
     }
 
-    suspend fun getSummaryApi(): List<Contries> {
+    suspend fun getSummaryApi(): List<Countries> {
         val response = api.getSummary()
         try {
             response.isSuccessful
@@ -41,23 +41,19 @@ class Repository @Inject constructor(
 
 
     // добавление данных в базу данных
-    suspend fun insertCountry(list: List<CountryDB>) {
+    suspend fun insertCountry(list: List<CountryEntity>) {
         daoCountry.insert(list)
     }
 
-    suspend fun getCountry(): List<CountryDB> {
+    suspend fun getCountry(): List<CountryEntity> {
         return daoCountry.getCountry()
     }
 
-    suspend fun getFilteredCountry(text: String): List<CountryDB> {
-        return daoCountry.getFilteredCountry(text)
-    }
-
-    suspend fun insertSummary(list: List<SummaryDB>) {
+    suspend fun insertSummary(list: List<SummaryEntity>) {
         daoSummary.insertConfirmed(list)
     }
 
-    suspend fun getSummary(country: String): List<SummaryDB> {
+    suspend fun getSummary(country: String): SummaryEntity {
         return daoSummary.getConfirmed(country)
     }
 }

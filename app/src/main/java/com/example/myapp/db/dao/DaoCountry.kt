@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.myapp.model.db.CountryDB
+import com.example.myapp.model.db.CountryEntity
 
 
 /**описание методов для работы с базой данных*/
@@ -12,11 +12,8 @@ import com.example.myapp.model.db.CountryDB
 interface DaoCountry {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(list: List<CountryDB>)
+    suspend fun insert(list: List<CountryEntity>)
 
     @Query("SELECT * from country_table")
-    suspend fun getCountry(): List<CountryDB>
-
-    @Query("SELECT * from country_table WHERE country LIKE :country ")
-    suspend fun getFilteredCountry(country: String): List<CountryDB>
+    suspend fun getCountry(): List<CountryEntity>
 }

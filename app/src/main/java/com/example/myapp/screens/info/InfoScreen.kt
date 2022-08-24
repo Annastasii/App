@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import org.chromium.base.Log
+import com.example.myapp.screens.Screen
 
 
 @Composable
@@ -23,9 +24,8 @@ fun InfoScreen(
 ) {
     val infoViewModel = hiltViewModel<InfoViewModel>()
     infoViewModel.setConfirmed(country!!)
-    val summary = infoViewModel.screenInfo
+    val summary = infoViewModel.summary
     val summaryItem = summary.value.getOrNull(0)
-    Log.d("list", "$summaryItem")
     Column(
         modifier = Modifier
             .background(color = Color.White)
@@ -43,47 +43,50 @@ fun InfoScreen(
                 .padding(horizontal = 20.dp)
         ) {
             Text(
-                text = "Date: ${summaryItem?.date}",
+                text = "Date: ${summaryItem?.date ?: "нет данных"}",
                 modifier = Modifier
                     .padding(vertical = 5.dp),
                 fontSize = 5.em
             )
             Text(
-                text = "Confirmed: ${summaryItem?.confirmed}",
+                text = "Confirmed: ${summaryItem?.confirmed ?: "нет данных"}",
                 modifier = Modifier
                     .padding(vertical = 5.dp),
                 fontSize = 5.em
             )
             Text(
-                text = "Recovered: ${summaryItem?.recovered}",
+                text = "Recovered: ${summaryItem?.recovered ?: "нет данных"}",
                 modifier = Modifier
                     .padding(vertical = 5.dp),
                 fontSize = 5.em
             )
             Text(
-                text = "Deaths: ${summaryItem?.deaths}",
+                text = "Deaths: ${summaryItem?.deaths ?: "нет данных"}",
                 modifier = Modifier
                     .padding(vertical = 5.dp),
                 fontSize = 5.em
             )
             Text(
-                text = "Total Confirmed: ${summaryItem?.totalConfirmed}",
+                text = "Total Confirmed: ${summaryItem?.totalConfirmed ?: "нет данных"}",
                 modifier = Modifier
                     .padding(vertical = 5.dp),
                 fontSize = 5.em
             )
             Text(
-                text = "Total Deaths: ${summaryItem?.totalDeaths}",
+                text = "Total Deaths: ${summaryItem?.totalDeaths ?: "нет данных"}",
                 modifier = Modifier
                     .padding(vertical = 5.dp),
                 fontSize = 5.em
             )
             Text(
-                text = "totalRecovered: ${summaryItem?.totalRecovered}",
+                text = "totalRecovered: ${summaryItem?.totalRecovered ?: "нет данных"}",
                 modifier = Modifier
                     .padding(vertical = 5.dp),
                 fontSize = 5.em
             )
+        }
+        Button(onClick = { navController.navigate(route = Screen.Start.route) }) {
+            Text(text = "Back")
         }
     }
 }
