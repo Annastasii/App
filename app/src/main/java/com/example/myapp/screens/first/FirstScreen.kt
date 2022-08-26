@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,7 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -33,7 +36,7 @@ fun StartScreen(
     ) {
         Column(
             modifier = Modifier
-                .background(color = Color(R.color.light_green))
+                .background(colorResource(R.color.light_green))
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -44,20 +47,23 @@ fun StartScreen(
                     .padding(vertical = 100.dp)
             )
             Text(
-                text = "Incidence \n" + "COVID-19",
-                fontSize = 50.sp
+                text = stringResource(R.string.covid),
+                fontSize = 50.sp,
+                modifier = Modifier
+                    .padding(bottom = 15.dp)
             )
             Button(
                 onClick = { navController.navigate(route = Screen.Country.route) },
                 modifier = Modifier
-                    .clip(shape = RoundedCornerShape(20.dp))
-                    .background(color = Color.White)
-                    .padding(vertical = 20.dp)
+                    .clip(shape = RoundedCornerShape(20.dp)),
+                colors = ButtonDefaults.buttonColors(Color.White)
             ) {
                 Text(
-                    text = "List of Countries",
+                    text = stringResource(R.string.list),
                     fontSize = 25.sp,
-                    color = Color.Black
+                    color = Color.Black,
+                    modifier = Modifier
+                        .background(color = Color.White)
                 )
             }
         }

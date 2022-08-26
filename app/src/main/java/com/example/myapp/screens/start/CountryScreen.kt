@@ -15,6 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -40,7 +42,7 @@ fun CountryScreen(
 
     Column(
         modifier = Modifier
-            .background(color = Color(R.color.green_and_white))
+            .background(colorResource(R.color.green_and_white))
             .fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -50,9 +52,12 @@ fun CountryScreen(
             elevation = 8.dp,
         ) {
             Column() {
-                TopAppBar(modifier = Modifier
-                    .background(color = Color.White)
-                    .height(80.dp)) {
+                TopAppBar(
+                    modifier = Modifier
+                        .height(80.dp),
+                    backgroundColor = colorResource(R.color.dark_green)
+
+                ) {
                     TextField(
                         value = textState.value, modifier = Modifier
                             .padding(vertical = 15.dp, horizontal = 50.dp),
@@ -60,8 +65,10 @@ fun CountryScreen(
                             textState.value = value
                         },
                         label = {
-                            Text(text = "Search...",
-                            color = Color.Gray)
+                            Text(
+                                text = stringResource(R.string.search),
+                                color = Color.White
+                            )
                         },
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Text,
@@ -93,9 +100,9 @@ fun CountryScreen(
                         Card(
                             modifier = Modifier
                                 .width(330.dp)
-                                .clip(shape = RoundedCornerShape(15.dp))
+                                .clip(shape = RoundedCornerShape(20.dp))
                                 .padding(vertical = 5.dp),
-                            backgroundColor = Color(R.color.green)
+                            backgroundColor = colorResource(R.color.green)
                         ) {
                             Text(text = item.country,
                                 fontSize = 4.em,
