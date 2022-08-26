@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -58,9 +59,10 @@ fun CountryScreen(
                     backgroundColor = colorResource(R.color.dark_green)
 
                 ) {
-                    TextField(
+                    OutlinedTextField(
                         value = textState.value, modifier = Modifier
-                            .padding(vertical = 15.dp, horizontal = 50.dp),
+                            .fillMaxWidth()
+                            .padding(horizontal = 10.dp),
                         onValueChange = { value ->
                             textState.value = value
                         },
@@ -73,7 +75,19 @@ fun CountryScreen(
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Text,
                             imeAction = ImeAction.Search
-                        )
+                        ),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            cursorColor = Color.Green,
+                            textColor = Color.White,
+                            focusedBorderColor = colorResource(R.color.white),
+                            unfocusedBorderColor = colorResource(R.color.dark_green)
+                        ),
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_baseline_search_24),
+                                contentDescription = "search"
+                            )
+                        }
                     )
                 }
                 LazyColumn(

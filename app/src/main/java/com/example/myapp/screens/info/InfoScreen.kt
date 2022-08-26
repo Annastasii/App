@@ -4,15 +4,18 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -44,14 +47,16 @@ fun InfoScreen(
                 .height(80.dp),
             backgroundColor = colorResource(R.color.dark_green)
         ) {
-            Row() {
-                Image(
-                    bitmap = ImageBitmap.imageResource(R.drawable.back),
+            Row(
+                modifier = Modifier,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_baseline_keyboard_arrow_left_24),
                     contentDescription = "Back",
                     modifier = Modifier
                         .clickable { navController.navigate(route = Screen.Country.route) }
                         .size(50.dp)
-                        .padding(top = 15.dp)
                 )
                 Text(
                     text = country,
