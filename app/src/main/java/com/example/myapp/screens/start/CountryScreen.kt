@@ -51,7 +51,8 @@ fun CountryScreen(
         ) {
             Column() {
                 TopAppBar(modifier = Modifier
-                    .background(color = Color.White).height(80.dp)) {
+                    .background(color = Color.White)
+                    .height(80.dp)) {
                     TextField(
                         value = textState.value, modifier = Modifier
                             .padding(vertical = 15.dp, horizontal = 50.dp),
@@ -69,7 +70,8 @@ fun CountryScreen(
                     )
                 }
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
                         .padding(vertical = 5.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {

@@ -32,9 +32,11 @@ fun InfoScreen(
     val summary = infoViewModel.summary
     val summaryItem = summary.value.getOrNull(0)
 
-    Column(modifier = Modifier
-        .background(color = Color(R.color.green_and_white))
-        .fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .background(color = Color(R.color.green_and_white))
+            .fillMaxSize()
+    ) {
 
         TopAppBar(
             modifier = Modifier
