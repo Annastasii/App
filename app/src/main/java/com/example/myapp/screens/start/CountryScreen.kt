@@ -5,16 +5,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Card
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -25,12 +24,13 @@ import androidx.compose.ui.unit.em
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.myapp.R
 import com.example.myapp.model.db.CountryEntity
 import com.example.myapp.screens.Screen
 
 
 @Composable
-fun StartScreen(
+fun CountryScreen(
     navController: NavController
 ) {
     val startViewModel = hiltViewModel<StartViewModel>()
@@ -40,38 +40,37 @@ fun StartScreen(
 
     Column(
         modifier = Modifier
-            .background(color = Color.White)
+            .background(color = Color(R.color.green_and_white))
             .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween,
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(
-            text = "Заболеваемость COVID",
-            modifier = Modifier.padding(vertical = 10.dp),
-            fontSize = 7.em
-        )
         Surface(
             modifier = Modifier
                 .fillMaxWidth(),
             elevation = 8.dp,
         ) {
             Column() {
-                TextField(
-                    value = textState.value, modifier = Modifier
-                        .padding(vertical = 15.dp, horizontal = 50.dp),
-                    onValueChange = { value ->
-                        textState.value = value
-                    },
-                    label = {
-                        Text(text = "Поиск")
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Search
+                TopAppBar(modifier = Modifier
+                    .background(color = Color.White).height(80.dp)) {
+                    TextField(
+                        value = textState.value, modifier = Modifier
+                            .padding(vertical = 15.dp, horizontal = 50.dp),
+                        onValueChange = { value ->
+                            textState.value = value
+                        },
+                        label = {
+                            Text(text = "Search...",
+                            color = Color.Gray)
+                        },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Search
+                        )
                     )
-                )
+                }
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize()
+                        .padding(vertical = 5.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     val countries = listCountry.value
@@ -89,11 +88,18 @@ fun StartScreen(
                     itemsIndexed(
                         filteredCountries
                     ) { _, item ->
-                        Card() {
+                        Card(
+                            modifier = Modifier
+                                .width(330.dp)
+                                .clip(shape = RoundedCornerShape(15.dp))
+                                .padding(vertical = 5.dp),
+                            backgroundColor = Color(R.color.green)
+                        ) {
                             Text(text = item.country,
                                 fontSize = 4.em,
+                                color = Color.White,
                                 modifier = Modifier
-                                    .padding(vertical = 15.dp)
+                                    .padding(vertical = 15.dp, horizontal = 5.dp)
                                     .clickable {
                                         navController.navigate(route = "${Screen.Info.route}/${item.country}")
                                     }
@@ -109,6 +115,6 @@ fun StartScreen(
 @Composable
 @Preview(showBackground = true)
 fun PreviewStartScreen() {
-    StartScreen(navController = rememberNavController())
+    CountryScreen(navController = rememberNavController())
 }
 
