@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
-//описание сущностей таблицы
+/** описание сущностей таблицы country_table */
 @Entity(tableName = "country_table")
 data class CountryEntity(
 

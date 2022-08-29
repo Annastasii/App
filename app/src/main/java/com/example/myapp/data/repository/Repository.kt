@@ -18,6 +18,7 @@ class Repository @Inject constructor(
     private val daoCountry: DaoCountry
 ) {
 
+    //     получить список стран(CountryItem) из API
     suspend fun getCountryApi(): List<CountryItem> {
         val response = api.getCountry()
         response.body()
@@ -29,6 +30,7 @@ class Repository @Inject constructor(
         return response.body()!!
     }
 
+    //    получить лист Countries из API
     suspend fun getSummaryApi(): List<Countries> {
         val response = api.getSummary()
         try {
@@ -39,20 +41,22 @@ class Repository @Inject constructor(
         return response.body()!!.countries
     }
 
-
-    // добавление данных в базу данных
+    // добавить данные в таблицу country_table
     suspend fun insertCountry(list: List<CountryEntity>) {
         daoCountry.insert(list)
     }
 
+    // получить данные из таблицы country_table
     suspend fun getCountry(): List<CountryEntity> {
         return daoCountry.getCountry()
     }
 
+    // добавить данные в таблицу confirmed_table
     suspend fun insertSummary(list: List<SummaryEntity>) {
         daoSummary.insertConfirmed(list)
     }
 
+    // получить данные из таблицы confirmed_table
     suspend fun getSummary(country: String): SummaryEntity {
         return daoSummary.getConfirmed(country)
     }

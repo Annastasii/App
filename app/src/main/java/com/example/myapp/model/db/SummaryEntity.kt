@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-/**описание сущностей таблицы*/
+/** описание сущностей таблицы confirmed_table */
 @Entity(tableName = "confirmed_table")
 data class SummaryEntity(
 

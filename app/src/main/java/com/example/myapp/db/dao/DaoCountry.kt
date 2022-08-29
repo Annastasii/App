@@ -11,9 +11,11 @@ import com.example.myapp.model.db.CountryEntity
 @Dao
 interface DaoCountry {
 
+    //    передача данных
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(list: List<CountryEntity>)
 
+    //    получение данных
     @Query("SELECT * from country_table")
     suspend fun getCountry(): List<CountryEntity>
 }

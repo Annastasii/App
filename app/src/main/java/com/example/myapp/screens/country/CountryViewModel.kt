@@ -1,4 +1,4 @@
-package com.example.myapp.screens.start
+package com.example.myapp.screens.country
 
 
 import androidx.compose.runtime.State
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class StartViewModel @Inject constructor(
+class CountryViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
 
@@ -25,7 +25,7 @@ class StartViewModel @Inject constructor(
         setCountry()
     }
 
-    // перенос данных по элементу
+    // перенос данных из API в CountryEntity
     private fun setCountry() {
         viewModelScope.launch {
             repository.getCountryApi().let { list ->
@@ -35,7 +35,7 @@ class StartViewModel @Inject constructor(
         }
     }
 
-    // получить список стран (room)
+    // получить лист CountryItem
     private fun getCountry() {
         viewModelScope.launch {
             _countryItem.value = repository.getCountry()

@@ -6,10 +6,11 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.myapp.screens.country.CountryScreen
 import com.example.myapp.screens.first.StartScreen
 import com.example.myapp.screens.info.InfoScreen
-import com.example.myapp.screens.start.CountryScreen
 
+/** NavController */
 @Composable
 fun SetUpNavGraph(
     navController: NavHostController
@@ -32,7 +33,7 @@ fun SetUpNavGraph(
         }
         composable(
             route = Screen.Start.route
-        ){
+        ) {
             StartScreen(navController)
         }
     }

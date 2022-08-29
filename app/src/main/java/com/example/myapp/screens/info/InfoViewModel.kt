@@ -19,8 +19,8 @@ class InfoViewModel @Inject constructor(
     val summary: State<List<SummaryEntity>> get() = _summary
     private val _summary = mutableStateOf(listOf<SummaryEntity>())
 
-    // перенос данных по элементу
-    fun setConfirmed(country: String) {
+    // перенос данных из API в SummaryEntity
+    fun setSummary(country: String) {
         viewModelScope.launch {
             repository.getSummaryApi().let { list ->
                 repository.insertSummary(list.map { it.mapperToEntity() })
@@ -29,6 +29,7 @@ class InfoViewModel @Inject constructor(
         }
     }
 
+    //    получить лист Countries
     private fun getSummary(country: String) {
         viewModelScope.launch {
             _summary.value = listOf(repository.getSummary(country))

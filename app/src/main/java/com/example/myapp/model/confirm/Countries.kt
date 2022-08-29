@@ -3,7 +3,7 @@ package com.example.myapp.model.confirm
 import com.google.gson.annotations.SerializedName
 
 
-/**структура confirmed*/
+/**структура Countries*/
 data class Countries(
 
     @SerializedName("Country")

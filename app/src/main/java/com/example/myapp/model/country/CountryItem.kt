@@ -3,7 +3,7 @@ package com.example.myapp.model.country
 import com.google.gson.annotations.SerializedName
 
 
-/**структура CountryItem*/
+/** структура CountryItem */
 data class CountryItem(
 
     @SerializedName("Country")

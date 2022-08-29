@@ -14,14 +14,17 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
+/** Модуль по работе с сервером */
 @Module(includes = [DataBaseModule::class])
 @InstallIn(SingletonComponent::class)
 class RemoteModule {
 
+    //    подключить HttpLoggingInterceptor
     @Provides
     @Singleton
     fun provideLogin(): HttpLoggingInterceptor = HttpLoggingInterceptor()
 
+    // подключить OkHttpClient
     @Provides
     @Singleton
     fun provideOkHttpClient(logging: HttpLoggingInterceptor): OkHttpClient =
@@ -29,6 +32,7 @@ class RemoteModule {
             .addInterceptor(logging)
             .build()
 
+    //    подключить Retrofit
     @Provides
     @Singleton
     fun provideRetrofit(client: OkHttpClient): Retrofit =
@@ -38,6 +42,7 @@ class RemoteModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
+    //    создать apiService
     @Provides
     @Singleton
     fun provideApiService(retrofit: Retrofit): ApiService =

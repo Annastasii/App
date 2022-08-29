@@ -1,4 +1,4 @@
-package com.example.myapp.screens.start
+package com.example.myapp.screens.country
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -36,7 +36,7 @@ import com.example.myapp.screens.Screen
 fun CountryScreen(
     navController: NavController
 ) {
-    val startViewModel = hiltViewModel<StartViewModel>()
+    val startViewModel = hiltViewModel<CountryViewModel>()
     val listCountry = startViewModel.countryItem
     val textState = remember { mutableStateOf(TextFieldValue("")) }
 
@@ -85,7 +85,8 @@ fun CountryScreen(
                         leadingIcon = {
                             Icon(
                                 painter = painterResource(R.drawable.ic_baseline_search_24),
-                                contentDescription = "search"
+                                tint = Color.White,
+                                contentDescription = ""
                             )
                         }
                     )
@@ -97,7 +98,7 @@ fun CountryScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     val countries = listCountry.value
-                    var filteredCountries: List<CountryEntity>
+                    val filteredCountries: List<CountryEntity>
                     val searchedText = textState.value.text
                     filteredCountries = if (searchedText.isEmpty()) {
                         countries

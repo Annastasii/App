@@ -10,9 +10,11 @@ import com.example.myapp.model.db.SummaryEntity
 @Dao
 interface DaoSummary {
 
+    //    передача данных
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertConfirmed(model: List<SummaryEntity>)
 
+    //    получение данных
     @Query("SELECT * from confirmed_table WHERE country =:country")
     suspend fun getConfirmed(country: String): SummaryEntity
 }
