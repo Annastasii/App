@@ -30,10 +30,7 @@ import com.example.myapp.screens.Screen
 fun StartScreen(
     navController: NavController
 ) {
-    Box(
-        modifier = Modifier
-
-    ) {
+    Box() {
         Column(
             modifier = Modifier
                 .background(colorResource(R.color.light_green))

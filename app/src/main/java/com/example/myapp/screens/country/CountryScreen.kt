@@ -1,11 +1,9 @@
 package com.example.myapp.screens.country
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -13,7 +11,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -23,13 +20,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapp.R
-import com.example.myapp.model.db.CountryEntity
-import com.example.myapp.screens.Screen
 
 
 @Composable
@@ -37,7 +31,7 @@ fun CountryScreen(
     navController: NavController
 ) {
     val startViewModel = hiltViewModel<CountryViewModel>()
-    val listCountry = startViewModel.countryItem
+    val listCountry = startViewModel.countryItem.value
     val textState = remember { mutableStateOf(TextFieldValue("")) }
 
 
@@ -52,7 +46,7 @@ fun CountryScreen(
                 .fillMaxWidth(),
             elevation = 8.dp,
         ) {
-            Column() {
+            Column {
                 TopAppBar(
                     modifier = Modifier
                         .height(80.dp),
@@ -77,7 +71,7 @@ fun CountryScreen(
                             imeAction = ImeAction.Search
                         ),
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            cursorColor = Color.Green,
+                            cursorColor = Color.White,
                             textColor = Color.White,
                             focusedBorderColor = colorResource(R.color.white),
                             unfocusedBorderColor = colorResource(R.color.dark_green)
@@ -86,7 +80,7 @@ fun CountryScreen(
                             Icon(
                                 painter = painterResource(R.drawable.ic_baseline_search_24),
                                 tint = Color.White,
-                                contentDescription = ""
+                                contentDescription = "search"
                             )
                         }
                     )
@@ -97,13 +91,11 @@ fun CountryScreen(
                         .padding(vertical = 5.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    val countries = listCountry.value
-                    val filteredCountries: List<CountryEntity>
                     val searchedText = textState.value.text
-                    filteredCountries = if (searchedText.isEmpty()) {
-                        countries
+                    val filteredCountries = if (searchedText.isEmpty()) {
+                        listCountry
                     } else {
-                        countries.let { list ->
+                        listCountry.let { list ->
                             list.filter { item ->
                                 item.country.contains(searchedText)
                             }
@@ -112,23 +104,7 @@ fun CountryScreen(
                     itemsIndexed(
                         filteredCountries
                     ) { _, item ->
-                        Card(
-                            modifier = Modifier
-                                .width(330.dp)
-                                .clip(shape = RoundedCornerShape(20.dp))
-                                .padding(vertical = 5.dp),
-                            backgroundColor = colorResource(R.color.green)
-                        ) {
-                            Text(text = item.country,
-                                fontSize = 4.em,
-                                color = Color.White,
-                                modifier = Modifier
-                                    .padding(vertical = 15.dp, horizontal = 5.dp)
-                                    .clickable {
-                                        navController.navigate(route = "${Screen.Info.route}/${item.country}")
-                                    }
-                            )
-                        }
+                        CardItem(item = item, navController = navController)
                     }
                 }
             }

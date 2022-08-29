@@ -16,7 +16,15 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="list">List of Countries</string>
     <string name="covid">Incidence \n" "COVID-19</string>
-    <string name="search">Search...</string>
-    <string name="nodata">Not data</string>
+    <string name="search"> </string>
+    <string name="no_data">Not data</string>
+    <string name="date">Date: %s</string>
+    <string name="confirmed">Confirmed: %s</string>
+    <string name="recovered">Recovered: %s</string>
+    <string name="deaths">Deaths: %s</string>
+    <string name="total_confirmed">Total Confirmed: %s</string>
+    <string name="total_deaths">Total Deaths: %s</string>
+    <string name="total_recovered">Total Recovered: %s</string>
+    <string name="country">%s</string>
 
 </resources>

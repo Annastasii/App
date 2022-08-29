@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapp.data.repository.Repository
 import com.example.myapp.model.db.SummaryEntity
-import com.example.myapp.util.mapperToEntity
+import com.example.myapp.util.mapToSummaryEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,7 +23,7 @@ class InfoViewModel @Inject constructor(
     fun setSummary(country: String) {
         viewModelScope.launch {
             repository.getSummaryApi().let { list ->
-                repository.insertSummary(list.map { it.mapperToEntity() })
+                repository.insertSummary(list.map { it.mapToSummaryEntity() })
             }
             getSummary(country)
         }

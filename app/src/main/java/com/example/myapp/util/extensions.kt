@@ -6,10 +6,10 @@ import com.example.myapp.model.db.CountryEntity
 import com.example.myapp.model.db.SummaryEntity
 
 // mapper из CountryItem в CountryEntity
-fun CountryItem.mapperToEntity(): CountryEntity = CountryEntity(country, iso2, slug)
+fun CountryItem.mapToCountryEntity(): CountryEntity = CountryEntity(country, iso2, slug)
 
 // mapper из Countries в SummaryEntity
-fun Countries.mapperToEntity(): SummaryEntity = SummaryEntity(
+fun Countries.mapToSummaryEntity(): SummaryEntity = SummaryEntity(
     slug,
     totalConfirmed,
     totalDeaths,

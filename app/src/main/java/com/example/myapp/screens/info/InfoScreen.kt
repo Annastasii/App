@@ -56,7 +56,7 @@ fun InfoScreen(
                         .size(50.dp)
                 )
                 Text(
-                    text = country,
+                    text = stringResource(id = R.string.country, country),
                     modifier = Modifier
                         .padding(vertical = 15.dp, horizontal = 15.dp),
                     fontSize = 7.em,
@@ -75,56 +75,48 @@ fun InfoScreen(
                     .background(color = Color.White)
                     .padding(horizontal = 20.dp)
             ) {
-                Text(
-                    text = "Date: ${summaryItem?.date ?: stringResource(R.string.nodata)}",
-                    modifier = Modifier
-                        .padding(vertical = 5.dp),
-                    fontSize = 5.em,
-                    color = Color.Gray
+                InfoText(
+                    data = stringResource(
+                        id = R.string.date,
+                        summaryItem?.date ?: stringResource(R.string.no_data)
+                    )
                 )
-                Text(
-                    text = "Confirmed: ${summaryItem?.confirmed ?: stringResource(R.string.nodata)}",
-                    modifier = Modifier
-                        .padding(vertical = 5.dp),
-                    fontSize = 5.em,
-                    color = Color.Gray
+                InfoText(
+                    data = stringResource(
+                        id = R.string.confirmed,
+                        summaryItem?.confirmed ?: stringResource(R.string.no_data)
+                    )
                 )
-                Text(
-                    text = "Recovered: ${summaryItem?.recovered ?: stringResource(R.string.nodata)}",
-                    modifier = Modifier
-                        .padding(vertical = 5.dp),
-                    fontSize = 5.em,
-                    color = Color.Gray
+                InfoText(
+                    data = stringResource(
+                        id = R.string.recovered,
+                        summaryItem?.recovered ?: stringResource(R.string.no_data)
+                    )
                 )
-                Text(
-                    text = "Deaths: ${summaryItem?.deaths ?: stringResource(R.string.nodata)}",
-                    modifier = Modifier
-                        .padding(vertical = 5.dp),
-                    fontSize = 5.em,
-                    color = Color.Gray
+                InfoText(
+                    data = stringResource(
+                        id = R.string.deaths,
+                        summaryItem?.deaths ?: stringResource(R.string.no_data)
+                    )
                 )
-                Text(
-                    text = "Total Confirmed: ${summaryItem?.totalConfirmed ?: stringResource(R.string.nodata)}",
-                    modifier = Modifier
-                        .padding(vertical = 5.dp),
-                    fontSize = 5.em,
-                    color = Color.Gray
+                InfoText(
+                    data = stringResource(
+                        id = R.string.total_confirmed,
+                        summaryItem?.totalConfirmed ?: stringResource(R.string.no_data)
+                    )
                 )
-                Text(
-                    text = "Total Deaths: ${summaryItem?.totalDeaths ?: stringResource(R.string.nodata)}",
-                    modifier = Modifier
-                        .padding(vertical = 5.dp),
-                    fontSize = 5.em,
-                    color = Color.Gray
+                InfoText(
+                    data = stringResource(
+                        id = R.string.total_deaths,
+                        summaryItem?.totalDeaths ?: stringResource(R.string.no_data)
+                    )
                 )
-                Text(
-                    text = "Total Recovered: ${summaryItem?.totalRecovered ?: stringResource(R.string.nodata)}",
-                    modifier = Modifier
-                        .padding(vertical = 5.dp),
-                    fontSize = 5.em,
-                    color = Color.Gray
+                InfoText(
+                    data = stringResource(
+                        id = R.string.total_recovered,
+                        summaryItem?.totalRecovered ?: stringResource(R.string.no_data)
+                    )
                 )
-
             }
         }
     }

@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapp.data.repository.Repository
 import com.example.myapp.model.db.CountryEntity
-import com.example.myapp.util.mapperToEntity
+import com.example.myapp.util.mapToCountryEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,7 +29,7 @@ class CountryViewModel @Inject constructor(
     private fun setCountry() {
         viewModelScope.launch {
             repository.getCountryApi().let { list ->
-                repository.insertCountry(list.map { it.mapperToEntity() })
+                repository.insertCountry(list.map { it.mapToCountryEntity() })
             }
             getCountry()
         }
