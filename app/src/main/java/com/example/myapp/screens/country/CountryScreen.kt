@@ -1,5 +1,6 @@
 package com.example.myapp.screens.country
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -30,10 +32,20 @@ import com.example.myapp.R
 fun CountryScreen(
     navController: NavController
 ) {
-    val startViewModel = hiltViewModel<CountryViewModel>()
-    val listCountry = startViewModel.countryItem.value
+    val countryViewModel = hiltViewModel<CountryViewModel>()
+    val listCountry = countryViewModel.countryItem.value
     val textState = remember { mutableStateOf(TextFieldValue("")) }
+    val isConnection = countryViewModel.isConnection
 
+    countryViewModel.isConnection(LocalContext.current)
+
+    // проверка подключения к интернету
+    if (isConnection.value) {
+        countryViewModel.setCountry()
+    } else {
+        Toast.makeText(LocalContext.current, "No server", Toast.LENGTH_LONG).show()
+        countryViewModel.getCountry()
+    }
 
     Column(
         modifier = Modifier
@@ -85,6 +97,7 @@ fun CountryScreen(
                         }
                     )
                 }
+
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()

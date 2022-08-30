@@ -1,5 +1,6 @@
 package com.example.myapp.screens.info
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -32,6 +34,17 @@ fun InfoScreen(
     infoViewModel.setSummary(country!!)
     val summary = infoViewModel.summary
     val summaryItem = summary.value.getOrNull(0)
+    val isConnection = infoViewModel.isConnection
+
+    infoViewModel.isConnection(LocalContext.current)
+
+    // проверка подключения к интернету
+    if (isConnection.value) {
+        infoViewModel.setSummary(country)
+    } else {
+        Toast.makeText(LocalContext.current, "No server", Toast.LENGTH_LONG).show()
+        infoViewModel.getSummary(country)
+    }
 
     Column(
         modifier = Modifier

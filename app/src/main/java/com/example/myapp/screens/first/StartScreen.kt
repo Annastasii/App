@@ -30,7 +30,7 @@ import com.example.myapp.screens.Screen
 fun StartScreen(
     navController: NavController
 ) {
-    Box() {
+    Box {
         Column(
             modifier = Modifier
                 .background(colorResource(R.color.light_green))
@@ -50,7 +50,10 @@ fun StartScreen(
                     .padding(bottom = 15.dp)
             )
             Button(
-                onClick = { navController.navigate(route = Screen.Country.route) },
+                onClick = {
+                    navController.navigate(route = Screen.Country.route)
+
+                          },
                 modifier = Modifier
                     .clip(shape = RoundedCornerShape(20.dp)),
                 colors = ButtonDefaults.buttonColors(Color.White)
@@ -67,4 +70,3 @@ fun StartScreen(
     }
 
 }
-

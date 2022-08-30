@@ -1,5 +1,8 @@
 package com.example.myapp.data.repository
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import com.example.myapp.data.api.ApiService
 import com.example.myapp.db.dao.DaoCountry
 import com.example.myapp.db.dao.DaoSummary
@@ -21,6 +24,7 @@ class Repository @Inject constructor(
     //     получить список стран(CountryItem) из API
     suspend fun getCountryApi(): List<CountryItem> {
         val response = api.getCountry()
+        Log.d("list", "$response")
         response.body()
         try {
             response.isSuccessful
@@ -59,5 +63,13 @@ class Repository @Inject constructor(
     // получить данные из таблицы confirmed_table
     suspend fun getSummary(country: String): SummaryEntity {
         return daoSummary.getConfirmed(country)
+    }
+
+    // проверка подключения к интернету
+    fun hasConnection(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(ConnectivityManager::class.java) as ConnectivityManager
+        val netInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
+        return !(netInfo == null || !netInfo.isConnected)
     }
 }

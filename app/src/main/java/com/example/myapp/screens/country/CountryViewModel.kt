@@ -1,6 +1,8 @@
 package com.example.myapp.screens.country
 
 
+import android.content.Context
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -20,13 +22,11 @@ class CountryViewModel @Inject constructor(
 
     val countryItem: State<List<CountryEntity>> get() = _countryItem
     private val _countryItem = mutableStateOf(listOf<CountryEntity>())
-
-    init {
-        setCountry()
-    }
+    val isConnection: MutableState<Boolean> get() = _isConnection
+    private val _isConnection = mutableStateOf(true)
 
     // перенос данных из API в CountryEntity
-    private fun setCountry() {
+    fun setCountry() {
         viewModelScope.launch {
             repository.getCountryApi().let { list ->
                 repository.insertCountry(list.map { it.mapToCountryEntity() })
@@ -36,9 +36,16 @@ class CountryViewModel @Inject constructor(
     }
 
     // получить лист CountryItem
-    private fun getCountry() {
+    fun getCountry() {
         viewModelScope.launch {
             _countryItem.value = repository.getCountry()
+        }
+    }
+
+    // проверка подключения к интернету
+    fun isConnection(context: Context) {
+        viewModelScope.launch {
+            _isConnection.value = repository.hasConnection(context)
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.example.myapp.di
 
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import com.example.myapp.data.api.ApiService
 import com.example.myapp.data.repository.Repository
 import com.example.myapp.db.dao.DaoCountry
