@@ -25,23 +25,12 @@ class Repository @Inject constructor(
     suspend fun getCountryApi(): List<CountryItem> {
         val response = api.getCountry()
         Log.d("list", "$response")
-        response.body()
-        try {
-            response.isSuccessful
-        } catch (e: Exception) {
-            Log.e("retrofit", "${response.errorBody()}")
-        }
         return response.body()!!
     }
 
     //    получить лист Countries из API
     suspend fun getSummaryApi(): List<Countries> {
         val response = api.getSummary()
-        try {
-            response.isSuccessful
-        } catch (e: Exception) {
-            Log.e("retrofit", "${response.errorBody()}")
-        }
         return response.body()!!.countries
     }
 
