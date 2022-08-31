@@ -31,7 +31,6 @@ fun InfoScreen(
     country: String?
 ) {
     val infoViewModel = hiltViewModel<InfoViewModel>()
-    infoViewModel.setSummary(country!!)
     val summary = infoViewModel.summary
     val summaryItem = summary.value.getOrNull(0)
     val isConnection = infoViewModel.isConnection
@@ -40,10 +39,10 @@ fun InfoScreen(
 
     // проверка подключения к интернету
     if (isConnection.value) {
-        infoViewModel.setSummary(country)
+        infoViewModel.setSummary(country!!)
     } else {
         Toast.makeText(LocalContext.current, "No server", Toast.LENGTH_LONG).show()
-        infoViewModel.getSummary(country)
+        infoViewModel.getSummary(country!!)
     }
 
     Column(
