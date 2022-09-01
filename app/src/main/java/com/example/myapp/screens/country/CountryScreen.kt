@@ -1,6 +1,5 @@
 package com.example.myapp.screens.country
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -35,17 +34,7 @@ fun CountryScreen(
     val countryViewModel = hiltViewModel<CountryViewModel>()
     val listCountry = countryViewModel.countryItem.value
     val textState = remember { mutableStateOf(TextFieldValue("")) }
-    val isConnection = countryViewModel.isConnection
-
-    countryViewModel.isConnection(LocalContext.current)
-
-    // проверка подключения к интернету
-    if (isConnection.value) {
-        countryViewModel.setCountry()
-    } else {
-        Toast.makeText(LocalContext.current, "No server", Toast.LENGTH_LONG).show()
-        countryViewModel.getCountry()
-    }
+    countryViewModel.getCountry(LocalContext.current)
 
     Column(
         modifier = Modifier

@@ -24,7 +24,6 @@ class Repository @Inject constructor(
     //     получить список стран(CountryItem) из API
     suspend fun getCountryApi(): List<CountryItem> {
         val response = api.getCountry()
-        Log.d("list", "$response")
         return response.body()!!
     }
 

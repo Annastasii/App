@@ -1,11 +1,13 @@
 package com.example.myapp.di
 
-import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import com.example.myapp.data.api.ApiService
 import com.example.myapp.data.repository.Repository
 import com.example.myapp.db.dao.DaoCountry
 import com.example.myapp.db.dao.DaoSummary
+import com.example.myapp.screens.country.usecase.GetCountryUseCase
+import com.example.myapp.screens.country.usecase.GetCountryUseCaseImp
+import com.example.myapp.screens.usecase.GetInfoUseCaseImp
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -58,5 +60,21 @@ class RemoteModule {
         daoCountry: DaoCountry
     ): Repository {
         return Repository(api, daoSummary, daoCountry)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCountryUseCase(
+        repository: Repository
+    ): GetCountryUseCaseImp {
+        return GetCountryUseCaseImp(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideInfoUseCase(
+        repository: Repository
+    ): GetInfoUseCaseImp {
+        return GetInfoUseCaseImp(repository)
     }
 }

@@ -1,6 +1,5 @@
 package com.example.myapp.screens.info
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -33,17 +32,8 @@ fun InfoScreen(
     val infoViewModel = hiltViewModel<InfoViewModel>()
     val summary = infoViewModel.summary
     val summaryItem = summary.value.getOrNull(0)
-    val isConnection = infoViewModel.isConnection
 
-    infoViewModel.isConnection(LocalContext.current)
-
-    // проверка подключения к интернету
-    if (isConnection.value) {
-        infoViewModel.setSummary(country!!)
-    } else {
-        Toast.makeText(LocalContext.current, "No server", Toast.LENGTH_LONG).show()
-        infoViewModel.getSummary(country!!)
-    }
+    infoViewModel.getCountry(LocalContext.current, country!!)
 
     Column(
         modifier = Modifier
