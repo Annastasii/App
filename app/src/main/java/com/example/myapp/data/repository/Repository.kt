@@ -10,7 +10,6 @@ import com.example.myapp.model.confirm.Countries
 import com.example.myapp.model.country.CountryItem
 import com.example.myapp.model.db.CountryEntity
 import com.example.myapp.model.db.SummaryEntity
-import org.chromium.base.Log
 import javax.inject.Inject
 
 

@@ -53,7 +53,7 @@ fun StartScreen(
                 onClick = {
                     navController.navigate(route = Screen.Country.route)
 
-                          },
+                },
                 modifier = Modifier
                     .clip(shape = RoundedCornerShape(20.dp)),
                 colors = ButtonDefaults.buttonColors(Color.White)

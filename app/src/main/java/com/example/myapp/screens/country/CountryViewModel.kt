@@ -1,21 +1,19 @@
 package com.example.myapp.screens.country
 
-
 import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapp.model.db.CountryEntity
-import com.example.myapp.screens.country.usecase.GetCountryUseCaseImp
+import com.example.myapp.screens.usecase.GetCountryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class CountryViewModel @Inject constructor(
-    private val countryUseCaseImp: GetCountryUseCaseImp
+    private val countryUseCase: GetCountryUseCase
 ) : ViewModel() {
 
     val countryItem: State<List<CountryEntity>> get() = _countryItem
@@ -23,8 +21,7 @@ class CountryViewModel @Inject constructor(
 
     fun getCountry(context: Context) {
         viewModelScope.launch {
-
-            _countryItem.value = countryUseCaseImp(context)
+            _countryItem.value = countryUseCase(context)
         }
     }
 }
