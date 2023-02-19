@@ -1,6 +1,11 @@
 package com.example.myapp.di
 
 import com.example.myapp.data.api.ApiService
+import com.example.myapp.data.repository.Repository
+import com.example.myapp.db.dao.DaoCountry
+import com.example.myapp.db.dao.DaoSummary
+import com.example.myapp.screens.usecase.GetCountryUseCase
+import com.example.myapp.screens.usecase.GetInfoUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,14 +16,17 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-@Module
+/** Модуль по работе с сервером */
+@Module(includes = [DataBaseModule::class])
 @InstallIn(SingletonComponent::class)
 class RemoteModule {
 
+    //    подключить HttpLoggingInterceptor
     @Provides
     @Singleton
     fun provideLogin(): HttpLoggingInterceptor = HttpLoggingInterceptor()
 
+    // подключить OkHttpClient
     @Provides
     @Singleton
     fun provideOkHttpClient(logging: HttpLoggingInterceptor): OkHttpClient =
@@ -26,6 +34,7 @@ class RemoteModule {
             .addInterceptor(logging)
             .build()
 
+    //    подключить Retrofit
     @Provides
     @Singleton
     fun provideRetrofit(client: OkHttpClient): Retrofit =
@@ -35,8 +44,35 @@ class RemoteModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
+    //    создать apiService
     @Provides
     @Singleton
     fun provideApiService(retrofit: Retrofit): ApiService =
         retrofit.create(ApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideRepository(
+        api: ApiService,
+        daoSummary: DaoSummary,
+        daoCountry: DaoCountry
+    ): Repository {
+        return Repository(api, daoSummary, daoCountry)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCountryUseCase(
+        repository: Repository
+    ): GetCountryUseCase {
+        return GetCountryUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideInfoUseCase(
+        repository: Repository
+    ): GetInfoUseCase {
+        return GetInfoUseCase(repository)
+    }
 }

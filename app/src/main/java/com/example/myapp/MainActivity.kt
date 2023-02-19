@@ -1,28 +1,24 @@
 package com.example.myapp
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import com.example.myapp.databinding.ActivityMainBinding
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.myapp.screens.SetUpNavGraph
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
-    private var binding: ActivityMainBinding? = null
-    lateinit var navController: NavController
-
-    companion object {
-        var app: MainActivity? = null
-    }
+    var navController: NavHostController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
+        setContent {
+            navController = rememberNavController()
 
-        navController = Navigation.findNavController(this, R.id.nav)
-        app = this
+            SetUpNavGraph(navController = navController!!)
+        }
     }
 }

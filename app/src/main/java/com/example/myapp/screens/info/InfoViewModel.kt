@@ -1,74 +1,29 @@
 package com.example.myapp.screens.info
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.content.Context
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapp.App
-import com.example.myapp.data.api.ApiService
-import com.example.myapp.data.repository.Repository
-import com.example.myapp.db.dao.DaoConfirmed
-import com.example.myapp.model.confirm.Confirmed
-import com.example.myapp.model.db.ConfirmedBD
-import kotlinx.coroutines.Dispatchers
+import com.example.myapp.model.db.SummaryEntity
+import com.example.myapp.screens.usecase.GetInfoUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class InfoViewModel : ViewModel() {
+@HiltViewModel
+class InfoViewModel @Inject constructor(
+    private val infoUseCase: GetInfoUseCase
+) : ViewModel() {
 
-    @Inject
-    lateinit var api: ApiService
+    val summary: State<List<SummaryEntity>> get() = _summary
+    private val _summary = mutableStateOf(listOf<SummaryEntity>())
 
-    private val repo = Repository(api)
-    private val livedata: MutableLiveData<List<ConfirmedBD>> = MutableLiveData()
-    private var confirmedDao: DaoConfirmed? = null
 
-    // получить базу данных
-    fun getDB() {
-        val database = App.getInstance()?.getDatabase()
-        confirmedDao = database?.getConfirmedDao()
-    }
-
-    // mapper Confirmed to ConfirmedBD
-    private fun mapperInfo(list: Confirmed) = ConfirmedBD(
-        list.slug,
-        list.totalConfirmed,
-        list.totalDeaths,
-        list.totalRecovered,
-        list.confirmed,
-        list.country,
-        list.countryCode,
-        list.date,
-        list.deaths,
-        list.recovered
-    )
-
-    // добавление даных в базу данных
-    private fun insertConfirmed(model: ConfirmedBD) {
-        viewModelScope.launch(Dispatchers.IO) {
-            confirmedDao?.insert(model)
-        }
-    }
-
-    // перенос данных по элементу
-    fun setConfirmed() {
+    fun getCountry(context: Context, country: String) {
         viewModelScope.launch {
-            val response = repo.getSummary()
-            response.body()?.let { summary ->
-                summary.countries.let { item ->
-                    item.forEach {
-                        insertConfirmed(mapperInfo(it))
-                    }
-                }
-            }
+            _summary.value = listOf(infoUseCase(context, country))
         }
     }
 
-    // получить список (room)
-    fun getConfirmed(country: String): LiveData<List<ConfirmedBD>> {
-        viewModelScope.launch {
-            livedata.postValue(confirmedDao?.getAll(country))
-        }
-        return livedata
-    }
 }
